@@ -26,11 +26,11 @@ jobs:
             exit 1
           fi
 
-      # Verify provenance signatures (WARN MODE)
-      # Missing or invalid signatures emit warnings but do not fail CI.
-      - name: Verify provenance signatures (warn mode)
+      # Verify provenance signatures (STRICT MODE)
+      # Missing or invalid signatures FAIL CI.
+      - name: Verify provenance signatures (strict mode)
         shell: pwsh
-        run: pwsh tools/verify-provenance-suite.ps1 -PublicKeyJsonPath .keys/determinism-signing.public.json -CasesPath examples/cases.yml -Mode warn
+        run: pwsh tools/verify-provenance-suite.ps1 -PublicKeyJsonPath .keys/determinism-signing.public.json -CasesPath examples/cases.yml -Mode strict
 
       # Run the full determinism suite over examples/cases.yml
       - name: Run determinism suite (golden + counterfactual)
