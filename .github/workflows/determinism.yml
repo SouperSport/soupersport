@@ -16,6 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Enforce sealed-only inputs (nondeterminism boundary)
+      - name: Enforce sealed-only inputs
+        shell: pwsh
+        run: if (Test-Path raw_input.txt) { throw "Raw input detected: seal it before use" }
+
       # Baseline execution
       - name: Generate certificate (baseline)
         shell: pwsh
