@@ -1,8 +1,8 @@
-\# SouperSport — Design Foundations
+\# SouperSport - Design Foundations
 
 
 
-This document captures the constraints that guide SouperSport’s design.
+This document captures the constraints that guide SouperSport's design.
 
 They are not features. They exist to limit the design space so reasoning
 
@@ -105,6 +105,4 @@ SouperSport does not optimize for:
 
 
 Readability to human reasoning and to compilers is prioritized over habit.
-
-
 
