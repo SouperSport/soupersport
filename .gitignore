@@ -2,7 +2,6 @@
 # Determinism & execution artifacts
 # -------------------------------------------------
 
-# Counterfactual / scratch outputs
 cf/
 
 # Local sealed scratch inputs (never commit)
@@ -19,6 +18,17 @@ cert_cf.json
 
 # Allow canonical golden certificates
 !examples/**/golden.cert.json
+
+
+# -------------------------------------------------
+# Signing keys (Stage 9)
+# -------------------------------------------------
+
+# Never commit private keys or key directories by default
+.keys/
+
+# Allow committing ONLY the public key JSON (explicit)
+!.keys/determinism-signing.public.json
 
 
 # -------------------------------------------------
