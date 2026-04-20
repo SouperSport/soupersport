@@ -16,18 +16,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Block golden cert changes outside the manual update workflow
+      - name: Block golden cert changes outside update workflow
+        shell: bash
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          if git diff --name-only "${{ github.event.before }}...${{ github.sha }}" | grep -q "golden\.cert\.json"; then
+            echo "::error::Golden certificates may only be updated via the Update Golden workflow."
+            exit 1
+          fi
+
+      # Enforce sealed-only inputs (nondeterminism boundary)
       - name: Enforce sealed-only inputs
         shell: pwsh
         run: pwsh tools/enforce-sealed-inputs.ps1
 
+      # Baseline execution
       - name: Generate certificate (baseline)
         shell: pwsh
-        run: pwsh tools/generate-cert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert1.json
+        run: pwsh tools/generate-cert.ps1 `
+          -SealedInputPath examples/case01/sealed_input.json `
+          -InitialStatePath examples/case01/initial_state.json `
+          -OutCertPath cert1.json
 
+      # Counterfactual execution (alternate strategy)
       - name: Generate certificate (counterfactual alt)
         shell: pwsh
-        run: pwsh tools/generate-cert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert_cf.json -CounterfactualMode alt
+        run: pwsh tools/generate-cert.ps1 `
+          -SealedInputPath examples/case01/sealed_input.json `
+          -InitialStatePath examples/case01/initial_state.json `
+          -OutCertPath cert_cf.json `
+          -CounterfactualMode alt
 
-      - name: Verify golden + counterfactual equivalence
+      # Golden + counterfactual enforcement
+      - name: Verify determinism and counterfactual equivalence
         shell: pwsh
-        run: pwsh tools/verify-golden-and-counterfactual.ps1 -GoldenCertPath examples/case01/golden.cert.json -BaselineCertPath cert1.json -CounterfactualCertPath cert_cf.json
+        run: pwsh tools/verify-golden-and-counterfactual.ps1 `
+          -GoldenCertPath examples/case01/golden.cert.json `
+          -BaselineCertPath cert1.json `
+          -CounterfactualCertPath cert_cf.json
