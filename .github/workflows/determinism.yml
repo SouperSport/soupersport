@@ -16,27 +16,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate certificate (run 1)
+      # Baseline execution
+      - name: Generate certificate (baseline)
         shell: pwsh
         run: pwsh tools/soupercert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert1.json
 
-      - name: Generate certificate (run 2)
+      # Counterfactual execution (alternate strategy)
+      - name: Generate certificate (counterfactual alt)
         shell: pwsh
-        run: pwsh tools/soupercert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert2.json
+        env:
+          SS_COUNTERFACTUAL_MODE: "alt"
+        run: pwsh tools/soupercert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert_cf.json
 
-      - name: Compare determinism hashes
+      # Golden + counterfactual enforcement
+      - name: Verify determinism and counterfactual equivalence
         shell: pwsh
         run: |
-          $c1 = Get-Content cert1.json -Raw | ConvertFrom-Json
-          $c2 = Get-Content cert2.json -Raw | ConvertFrom-Json
+          $golden = Get-Content examples/case01/golden.cert.json -Raw | ConvertFrom-Json
+          $base   = Get-Content cert1.json -Raw | ConvertFrom-Json
+          $cf     = Get-Content cert_cf.json -Raw | ConvertFrom-Json
 
-          if ($c1.output_hash -ne $c2.output_hash) {
-            Write-Host "::error::Output hash mismatch (determinism broken)."
-            exit 1
-          }
-          if ($c1.trace_hash -ne $c2.trace_hash) {
-            Write-Host "::error::Trace hash mismatch (determinism broken)."
+          if ($golden.output_hash -ne $base.output_hash -or $golden.trace_hash -ne $base.trace_hash) {
+            Write-Host "::error::Golden determinism violation."
             exit 1
           }
 
-          Write-Host "Determinism OK: output_hash and trace_hash match."
+          if ($base.trace_hash -ne $cf.trace_hash) {
+            Write-Host "::error::Counterfactual trace divergence."
+            exit 1
+          }
+
+          Write-Host "Determinism OK: golden, baseline, and counterfactual traces match."
