@@ -1,0 +1,10 @@
+# Determinism Test Cases
+#
+# Each case defines a sealed input, an initial state, and a golden
+# certificate against which semantics are enforced in CI.
+
+cases:
+  - name: case01
+    sealed_input: examples/case01/sealed_input.json
+    initial_state: examples/case01/initial_state.json
+    golden_cert: examples/case01/golden.cert.json
