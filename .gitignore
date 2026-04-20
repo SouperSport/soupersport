@@ -1,3 +1,39 @@
+# -------------------------------------------------
+# Determinism & execution artifacts
+# -------------------------------------------------
+
+# Counterfactual / scratch outputs
+cf/
+
+# Local sealed scratch inputs (never commit)
+sealed_input.json
+
+# Allow canonical sealed inputs for determinism cases
+!examples/**/sealed_input.json
+
+# Generated certificates (never commit directly)
 cert1.json
 cert2.json
-*.cert.json!examples/**/golden.cert.json
+cert_cf.json
+*.cert.json
+
+# Allow canonical golden certificates
+!examples/**/golden.cert.json
+
+
+# -------------------------------------------------
+# OS / editor noise
+# -------------------------------------------------
+
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.bak
+
+
+# -------------------------------------------------
+# PowerShell tooling noise
+# -------------------------------------------------
+
+Microsoft.PowerShell_profile.ps1
