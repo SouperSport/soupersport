@@ -26,32 +26,7 @@ jobs:
             exit 1
           fi
 
-      # Enforce sealed-only inputs (nondeterminism boundary)
-      - name: Enforce sealed-only inputs
+      # Run the full determinism suite over examples/cases.yml
+      - name: Run determinism suite (golden + counterfactual)
         shell: pwsh
-        run: pwsh tools/enforce-sealed-inputs.ps1
-
-      # Baseline execution
-      - name: Generate certificate (baseline)
-        shell: pwsh
-        run: pwsh tools/generate-cert.ps1 `
-          -SealedInputPath examples/case01/sealed_input.json `
-          -InitialStatePath examples/case01/initial_state.json `
-          -OutCertPath cert1.json
-
-      # Counterfactual execution (alternate strategy)
-      - name: Generate certificate (counterfactual alt)
-        shell: pwsh
-        run: pwsh tools/generate-cert.ps1 `
-          -SealedInputPath examples/case01/sealed_input.json `
-          -InitialStatePath examples/case01/initial_state.json `
-          -OutCertPath cert_cf.json `
-          -CounterfactualMode alt
-
-      # Golden + counterfactual enforcement
-      - name: Verify determinism and counterfactual equivalence
-        shell: pwsh
-        run: pwsh tools/verify-golden-and-counterfactual.ps1 `
-          -GoldenCertPath examples/case01/golden.cert.json `
-          -BaselineCertPath cert1.json `
-          -CounterfactualCertPath cert_cf.json
+        run: pwsh tools/run-determinism-suite.ps1 -CasesPath examples/cases.yml -CounterfactualMode alt
