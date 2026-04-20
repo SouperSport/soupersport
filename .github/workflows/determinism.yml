@@ -16,49 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Enforce sealed-only inputs (nondeterminism boundary)
       - name: Enforce sealed-only inputs
         shell: pwsh
-        run: |
-          if (Test-Path raw_input.txt) {
-            throw "Raw input detected: seal it before use"
-          }
+        run: pwsh tools/enforce-sealed-inputs.ps1
 
-      # Baseline execution
       - name: Generate certificate (baseline)
         shell: pwsh
-        run: pwsh tools/soupercert.ps1 `
-          -SealedInputPath examples/case01/sealed_input.json `
-          -InitialStatePath examples/case01/initial_state.json `
-          -OutCertPath cert1.json
+        run: pwsh tools/generate-cert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert1.json
 
-      # Counterfactual execution (alternate strategy)
       - name: Generate certificate (counterfactual alt)
         shell: pwsh
-        env:
-          SS_COUNTERFACTUAL_MODE: "alt"
-        run: pwsh tools/soupercert.ps1 `
-          -SealedInputPath examples/case01/sealed_input.json `
-          -InitialStatePath examples/case01/initial_state.json `
-          -OutCertPath cert_cf.json
+        run: pwsh tools/generate-cert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert_cf.json -CounterfactualMode alt
 
-      # Golden + counterfactual enforcement
-      - name: Verify determinism and counterfactual equivalence
+      - name: Verify golden + counterfactual equivalence
         shell: pwsh
-        run: |
-          $golden = Get-Content examples/case01/golden.cert.json -Raw | ConvertFrom-Json
-          $base   = Get-Content cert1.json -Raw | ConvertFrom-Json
-          $cf     = Get-Content cert_cf.json -Raw | ConvertFrom-Json
-
-          if ($golden.output_hash -ne $base.output_hash -or
-              $golden.trace_hash  -ne $base.trace_hash) {
-            Write-Host "::error::Golden determinism violation."
-            exit 1
-          }
-
-          if ($base.trace_hash -ne $cf.trace_hash) {
-            Write-Host "::error::Counterfactual trace divergence."
-            exit 1
-          }
-
-          Write-Host "Determinism OK: golden, baseline, and counterfactual traces match."
+        run: pwsh tools/verify-golden-and-counterfactual.ps1 -GoldenCertPath examples/case01/golden.cert.json -BaselineCertPath cert1.json -CounterfactualCertPath cert_cf.json
