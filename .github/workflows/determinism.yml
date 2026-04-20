@@ -1,0 +1,39 @@
+name: Determinism Certificate Gate
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  determinism:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate certificate (run 1)
+        shell: pwsh
+        run: pwsh tools/soupercert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert1.json
+
+      - name: Generate certificate (run 2)
+        shell: pwsh
+        run: pwsh tools/soupercert.ps1 -SealedInputPath examples/case01/sealed_input.json -InitialStatePath examples/case01/initial_state.json -OutCertPath cert2.json
+
+      - name: Compare determinism hashes
+        shell: pwsh
+        run: |
+          $c1 = Get-Content cert1.json -Raw | ConvertFrom-Json
+          $c2 = Get-Content cert2.json -Raw | ConvertFrom-Json
+
+          if ($c1.output_hash -ne $c2.output_hash) {
+            Write-Host "::error::Output hash mismatch (determinism broken)."
+            exit 1
+          }
+          if ($c1.trace_hash -ne $c2.trace_hash) {
+            Write-Host "::error::Trace hash mismatch (determinism broken)."
+            exit 1
+          }
+
+          Write-Host "Determinism OK: output_hash and trace_hash match."
