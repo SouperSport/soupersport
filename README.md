@@ -1,53 +1,146 @@
-SouperSport
-SouperSport is a programming language design project.
-The project explores what can be achieved when a language is designed around
-explicit execution semantics, deliberate state transitions, and constraints
-that favor reasoning over convenience.
-SouperSport exists to address common failures in complex systems:
-hidden nondeterminism, irreproducible behavior, unsafe refactoring,
-and the inability to explain why a change altered system behavior.
+\# SouperSport
+
+
+
+SouperSport is a programming language design project focused on making
+
+execution \*\*explicit, deterministic where claimed, and explainable\*\*.
+
+
+
+The project explores what becomes possible when a language is designed around:
+
+
+
+\- explicit execution semantics
+
+\- visible and intentional state transitions
+
+\- constraints that prioritize reasoning over convenience
+
+
+
+SouperSport exists to address persistent failures in complex systems, including
+
+hidden nondeterminism, irreproducible behavior, unsafe refactoring, and the
+
+inability to explain \*why\* a change altered system behavior.
+
+
+
 There is no implementation yet, and none is promised at this stage.
-This repository captures early design foundations and public-facing
-decisions only.
-Status
-SouperSport is currently in Phase 10: Narrative Stabilization.
-This phase focuses on:
 
-clarifying core constraints and binding non-goals
-establishing a clear and explainable execution model
-aligning introductory documentation with settled design decisions
-resisting premature commitments to syntax, tooling, or implementation
+This repository contains \*\*design foundations and process history\*\*, not a
 
-Structural changes during this phase are expected and intentional.
-SouperSport is not intended to be:
-
-a general-purpose scripting language
-a frontend language
-a drop-in replacement for existing ecosystems such as JavaScript or Python
-
-What exploring SouperSport currently means
-At this stage, working with SouperSport primarily involves reasoning about:
-
-deterministic regions of execution
-explicit boundaries where nondeterminism is allowed
-visible and intentional state transitions
-provenance-aware explanations of behavior
-counterfactual and rewind-style reasoning
-
-These concepts form the intended first-hour experience, even before any
-executable tooling exists.
-Repository contents
-This repository contains public, durable artifacts only.
+production-ready language or toolchain.
 
 
-docs/foundations.md
-Binding design constraints and non-goals.
+
+\---
 
 
-docs/process-notes.md
-Factual notes about process decisions, terminology changes,
-CI incidents, and deliberate choices not to rewrite history.
+
+\## Status
 
 
-Project-control documents, workflow reminders, and private planning
-materials are intentionally maintained outside this repository.
+
+The project has completed \*\*Phase 10: Narrative Stabilization\*\*.
+
+
+
+Phase 10 focused on:
+
+
+
+\- clarifying and freezing core design constraints
+
+\- separating public design artifacts from private project control state
+
+\- aligning terminology and scope (Phases vs internal gates)
+
+\- ensuring documentation accurately reflects project maturity
+
+
+
+The next phase will focus on defining a minimal executable semantic target.
+
+That work is deliberately gated and has not yet begun.
+
+
+
+\---
+
+
+
+\## What engaging with SouperSport currently means
+
+
+
+At this stage, working with SouperSport means reasoning about:
+
+
+
+\- deterministic regions of execution
+
+\- explicit boundaries where nondeterminism is permitted or refused
+
+\- state transitions that are deliberate, visible, and traceable
+
+\- provenance-backed explanations of behavior
+
+\- counterfactual and rewind-style reasoning about change
+
+
+
+These concepts define the project's intended \*first-hour experience\*, even
+
+in the absence of executable tooling.
+
+
+
+SouperSport is \*\*not\*\* intended to be:
+
+
+
+\- a general-purpose scripting language
+
+\- a frontend language
+
+\- a drop-in replacement for JavaScript, Python, or similar ecosystems
+
+\- a shortcut to performance, parallelism, or convenience
+
+
+
+\---
+
+
+
+\## Repository contents
+
+
+
+This repository intentionally contains \*\*public, durable artifacts only\*\*.
+
+
+
+\- `docs/foundations.md`  
+
+&#x20; Binding design constraints and non-goals that limit the design space.
+
+
+
+\- `docs/process-notes.md`  
+
+&#x20; A factual record of process decisions, terminology corrections,
+
+&#x20; CI incidents, and deliberate choices to preserve project history.
+
+
+
+Private project-control documents, workflow reminders, and planning notes are
+
+maintained outside this repository by design.
+
+
+
