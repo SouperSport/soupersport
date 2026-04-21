@@ -22,7 +22,9 @@ be explicit and justified.
 
 Execution order must be representable and reasoned about without relying
 
-on convention, folklore, or implicit rules.
+on convention, folklore, or implicit rules, so that identical inputs and
+
+state can be expected to yield explainable behavior.
 
 
 
@@ -68,7 +70,7 @@ over abstraction mechanisms that compress meaning.
 
 If an abstraction makes reasoning harder than the thing it replaces,
 
-it is likely out of scope.
+even if it reduces code size or repetition, it is likely out of scope.
 
 
 
@@ -105,4 +107,6 @@ SouperSport does not optimize for:
 
 
 Readability to human reasoning and to compilers is prioritized over habit.
+
+
 
