@@ -154,9 +154,9 @@ Conceptually:
 
 \- execution steps consume prior state and produce new state,
 
-\- produced state becomes available only after the responsible step
+\- produced state becomes available only after the responsible step is
 
-&#x20; is satisfied.
+&#x20; satisfied.
 
 
 
@@ -302,7 +302,7 @@ The project has now completed:
 
 
 
-All subsequent phases are explicitly implementational and must preserve
+All subsequent phases are \*\*explicitly implementational\*\* and must
 
-the semantic commitments defined in Phases 11.1 through 
+preserve the semantic commitments defined in Phases 11.1 through 11.5.
 

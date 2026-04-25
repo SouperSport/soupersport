@@ -10,23 +10,27 @@ This document defines the rules governing:
 
 
 
-\- what it means to \*\*claim conformance\*\*
+\- what it means to \*\*claim conformance\*\*,
 
-\- how \*\*refusal\*\* is treated as a semantic result
+\- how \*\*refusal\*\* is treated as a semantic result,
 
-\- what structure, stability, and guarantees conformance and refusal information must have
+\- what structure, stability, and guarantees conformance and refusal
+
+&#x20; information must have.
 
 
 
 It exists to prevent:
 
-\- accidental creation of unofficial semantic APIs
 
-\- tooling- or test-driven redefinition of meaning
 
-\- divergence between independent implementations
+\- accidental creation of unofficial semantic APIs,
 
-\- future disputes about what behavior is acceptable
+\- tooling‑ or test‑driven redefinition of meaning,
+
+\- divergence between independent implementations,
+
+\- future disputes about what behavior is acceptable.
 
 
 
@@ -52,9 +56,11 @@ Conformance is \*\*binary\*\*.
 
 A system either:
 
+
+
 \- conforms to SouperSport semantics, or
 
-\- does not
+\- does not.
 
 
 
@@ -62,15 +68,17 @@ There is no concept of partial, graded, or approximate conformance.
 
 
 
-A system may be incomplete.
+A system may be incomplete.  
 
-It may be experimental.
+It may be experimental.  
 
 It may support only a subset of language features.
 
 
 
-If it claims conformance, \*\*all required semantic obligations must be met\*\* for the behaviors it supports.
+If it claims conformance, \*\*all required semantic obligations must be
+
+met\*\* for the behaviors it supports.
 
 
 
@@ -78,7 +86,7 @@ If it claims conformance, \*\*all required semantic obligations must be met\*\* 
 
 
 
-\### Scope-Limited Conformance
+\### Scope‑Limited Conformance
 
 
 
@@ -88,19 +96,23 @@ A system may explicitly limit the scope of what it supports.
 
 Within that declared scope:
 
-\- all semantic rules apply fully
 
-\- all requirements must be satisfied
 
-\- refusal is mandatory when legality or explanation cannot be upheld
+\- all semantic rules apply fully,
+
+\- all requirements must be satisfied,
+
+\- refusal is mandatory when legality or explanation cannot be upheld.
 
 
 
 Outside that scope:
 
-\- the system must refuse
 
-\- silence or undefined behavior is not permitted
+
+\- the system must refuse,
+
+\- silence or undefined behavior is not permitted.
 
 
 
@@ -114,15 +126,17 @@ Outside that scope:
 
 A system must not claim conformance if it:
 
-\- omits required semantic artifacts
 
-\- substitutes heuristics, logs, or cache reuse for semantic construction
 
-\- silently degrades behavior under resource pressure
+\- omits required semantic artifacts,
 
-\- invents or suppresses refusals
+\- substitutes heuristics, logs, or cache reuse for semantic construction,
 
-\- executes behavior it cannot fully explain
+\- silently degrades behavior under resource pressure,
+
+\- invents or suppresses refusals,
+
+\- executes behavior it cannot fully explain.
 
 
 
@@ -138,15 +152,19 @@ A system must not claim conformance if it:
 
 
 
-Refusal is a \*\*semantic result\*\*, not an error, exception, or tooling failure.
+Refusal is a \*\*semantic result\*\*, not an error, exception, or tooling
+
+failure.
 
 
 
 A refusal indicates that:
 
+
+
 \- a program is illegal under the semantic rules, or
 
-\- required guarantees cannot be proven or upheld
+\- required guarantees cannot be proven or upheld.
 
 
 
@@ -164,19 +182,21 @@ Refusal has equal standing with successful execution.
 
 A system must refuse when it cannot:
 
-\- establish legality
-
-\- enforce declared semantic regions
-
-\- produce required semantic artifacts
-
-\- explain execution under declared guarantees
-
-\- uphold deterministic identity when claimed
 
 
+\- establish legality,
 
-Continuing execution in such cases is non-conformant.
+\- enforce declared semantic regions,
+
+\- produce required semantic artifacts,
+
+\- explain execution under declared guarantees,
+
+\- uphold deterministic identity when claimed.
+
+
+
+Continuing execution in such cases is non‑conformant.
 
 
 
@@ -194,15 +214,19 @@ Continuing execution in such cases is non-conformant.
 
 Every refusal must include:
 
-\- identification of refusal (as opposed to execution)
-
-\- the semantic boundary or rule implicated
-
-\- sufficient context to distinguish \*what failed\* from \*why\*
 
 
+\- identification of refusal (as opposed to execution),
 
-This information must be explicit and attributable to semantic rules, not tooling interpretation.
+\- the semantic boundary or rule implicated,
+
+\- sufficient context to distinguish \*what failed\* from \*why\*.
+
+
+
+This information must be explicit and attributable to semantic rules,
+
+not tooling interpretation.
 
 
 
@@ -216,41 +240,49 @@ This information must be explicit and attributable to semantic rules, not toolin
 
 Refusal reasons:
 
-\- \*\*may be structured\*\*
 
-\- \*\*may be identified\*\*
 
-\- \*\*may be versioned\*\*
+\- \*\*may be structured\*\*,
+
+\- \*\*may be identified\*\*,
+
+\- \*\*may be versioned\*\*.
 
 
 
 No requirement exists to provide:
 
-\- a closed enumeration
-
-\- numeric codes
-
-\- a fixed taxonomy
 
 
+\- a closed enumeration,
 
-However:
+\- numeric codes,
+
+\- a fixed taxonomy.
 
 
 
-If a system introduces structured refusal identifiers, classifications, or categories:
+However, if a system introduces structured refusal identifiers,
 
-\- they must be explicit
-
-\- they must not redefine legality
-
-\- they must not weaken semantic rules
-
-\- changes to them must be treated as user-visible, compatibility-relevant changes
+classifications, or categories:
 
 
 
-Textual explanation alone is always sufficient to satisfy refusal requirements.
+\- they must be explicit,
+
+\- they must not redefine legality,
+
+\- they must not weaken semantic rules,
+
+\- changes to them must be treated as user‑visible,
+
+&#x20; compatibility‑relevant changes.
+
+
+
+Textual explanation alone is always sufficient to satisfy refusal
+
+requirements.
 
 
 
@@ -264,9 +296,11 @@ Textual explanation alone is always sufficient to satisfy refusal requirements.
 
 Refusal explanations must be:
 
-\- semantically stable within a version
 
-\- attributable to specific rules or boundaries
+
+\- semantically stable within a version,
+
+\- attributable to specific rules or boundaries.
 
 
 
@@ -284,35 +318,43 @@ Meaning and attribution are.
 
 
 
-Tests, continuous integration systems, simulators, and example harnesses are \*\*tools\*\*.
+Tests, continuous integration systems, simulators, and example harnesses
+
+are \*\*tools\*\*.
 
 
 
 They:
 
-\- may observe
 
-\- may assert expected artifacts
 
-\- may validate determinism and refusal
+\- may observe,
 
-\- may fail loudly
+\- may assert expected artifacts,
+
+\- may validate determinism and refusal,
+
+\- may fail loudly.
 
 
 
 They may not:
 
-\- invent legality
-
-\- override refusal
-
-\- reinterpret semantic results
-
-\- claim conformance on behalf of a system
 
 
+\- invent legality,
 
-A test that passes on non-conformant behavior does not legitimize that behavior.
+\- override refusal,
+
+\- reinterpret semantic results,
+
+\- claim conformance on behalf of a system.
+
+
+
+A test that passes on non‑conformant behavior does not legitimize that
+
+behavior.
 
 
 
@@ -320,21 +362,23 @@ A test that passes on non-conformant behavior does not legitimize that behavior.
 
 
 
-\## Non-Goals
+\## Non‑Goals
 
 
 
 This document does not:
 
-\- define refusal taxonomies
 
-\- mandate specific identifiers or formats
 
-\- describe user-facing presentation
+\- define refusal taxonomies,
 
-\- prescribe error messages
+\- mandate specific identifiers or formats,
 
-\- define testing methodologies
+\- describe user‑facing presentation,
+
+\- prescribe error messages,
+
+\- define testing methodologies.
 
 
 
@@ -352,9 +396,11 @@ Those concerns are intentionally left open.
 
 If a system cannot clearly state:
 
+
+
 \- whether it executed or refused, and
 
-\- why that outcome occurred under semantic rules
+\- why that outcome occurred under semantic rules,
 
 
 

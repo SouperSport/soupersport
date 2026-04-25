@@ -1,4 +1,4 @@
-# Minimal Execution Model — Phase 11.2
+## Minimal Execution Model — Phase 11.2
 
 This document refines the semantic commitments defined in
 `semantic-target.md` by describing the **minimum concrete structures**
@@ -434,11 +434,11 @@ evaluation.
 
 ---
 
-### Status
+## Status
 
-With Section 4 defined:
+With this document complete:
 
-- Phase 11.2 specifies state, ordering, tracing, and counterfactual
+- Phase 11.2 specifies state, ordering, tracing, and counterfactual
   meaning.
 - No implementation commitments have been introduced.
 - The semantic execution model is sufficient to reason about preserved

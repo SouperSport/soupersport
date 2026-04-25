@@ -1,90 +1,114 @@
-\# SouperSport - Design Foundations
+\# SouperSport — Design Foundations
 
 
 
-This document captures the constraints that guide SouperSport's design.
-
-They are not features. They exist to limit the design space so reasoning
-
-remains tractable as the language evolves.
+This document captures the constraints that guide SouperSport’s design.
 
 
 
-If a future idea violates one of these foundations, the violation should
+They are not features.
 
-be explicit and justified.
+They exist to limit the design space so reasoning remains tractable as the
 
-
-
-\## 1. Explicit execution
+language evolves.
 
 
 
-Execution order must be representable and reasoned about without relying
+If a future idea violates one of these foundations, the violation should be
 
-on convention, folklore, or implicit rules, so that identical inputs and
+explicit and justified.
 
-state can be expected to yield explainable behavior.
+
+
+\---
+
+
+
+\## 1. Explicit Execution
+
+
+
+Execution order must be representable and reasoned about without relying on
+
+convention, folklore, or implicit rules, so that identical inputs and state
+
+can be expected to yield explainable behavior.
 
 
 
 If something happens, it should be possible to explain:
 
-\- when it happens
-
-\- why it happens
-
-\- what it depends on
 
 
+\- when it happens,
 
-\## 2. State is visible and intentional
+\- why it happens,
+
+\- what it depends on.
 
 
 
-State transitions are first-class.
+\---
 
 
 
-Hidden mutation, ambient state, and action at a distance are treated as
-
-costs rather than conveniences.
+\## 2. State Is Visible and Intentional
 
 
 
-When state changes, that change should be local in description and
-
-difficult to perform accidentally.
+State transitions are first‑class.
 
 
 
-\## 3. Composition over abstraction
+Hidden mutation, ambient state, and action at a distance are treated as costs
+
+rather than conveniences.
 
 
 
-SouperSport favors composition mechanisms that preserve understanding
+When state changes, that change should be local in description and difficult
 
-over abstraction mechanisms that compress meaning.
-
-
-
-If an abstraction makes reasoning harder than the thing it replaces,
-
-even if it reduces code size or repetition, it is likely out of scope.
+to perform accidentally.
 
 
 
-\## 4. Small semantic surface
+\---
+
+
+
+\## 3. Composition over Abstraction
+
+
+
+SouperSport favors composition mechanisms that preserve understanding over
+
+abstraction mechanisms that compress meaning.
+
+
+
+If an abstraction makes reasoning harder than the thing it replaces—even if it
+
+reduces code size or repetition—it is likely out of scope.
+
+
+
+\---
+
+
+
+\## 4. Small Semantic Surface
 
 
 
 The language should aim for:
 
-\- few core concepts
 
-\- minimal special cases
 
-\- uniform rules
+\- few core concepts,
+
+\- minimal special cases,
+
+\- uniform rules.
 
 
 
@@ -92,21 +116,25 @@ Expressiveness should emerge from combination, not exception.
 
 
 
-\## 5. Non-goals are binding constraints
+\---
+
+
+
+\## 5. Non‑Goals Are Binding Constraints
 
 
 
 SouperSport does not optimize for:
 
-\- minimal keystrokes
 
-\- syntactic cleverness
 
-\- familiarity with existing languages
+\- minimal keystrokes,
+
+\- syntactic cleverness,
+
+\- familiarity with existing languages.
 
 
 
 Readability to human reasoning and to compilers is prioritized over habit.
-
-
 

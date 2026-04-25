@@ -6,6 +6,14 @@
 
 
 
+\---
+
+
+
+\## Statement (binding)
+
+
+
 All control flow that affects semantic outcome must be explicit,
 
 representable, and traceable.
@@ -13,6 +21,8 @@ representable, and traceable.
 
 
 This includes:
+
+
 
 \- branching,
 
@@ -28,7 +38,11 @@ This includes:
 
 Control flow must be structurally local to its declared handling context.
 
+
+
 It MUST NOT:
+
+
 
 \- depend on implicit runtime behavior,
 
@@ -40,9 +54,13 @@ It MUST NOT:
 
 
 
-Errors are control-flow events and are subject to the same requirements.
+Errors are control‑flow events and are subject to the same requirements.
+
+
 
 An error that affects execution or outcome MUST be:
+
+
 
 \- explicitly represented,
 

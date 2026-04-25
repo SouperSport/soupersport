@@ -40,15 +40,19 @@ respect to the SouperSport semantic model?
 
 
 
-The reference execution is not optimized, user‑facing, or production‑oriented.
+The reference execution is not optimized, user‑facing, or
+
+production‑oriented.
+
+
 
 Its role is to:
 
 
 
-\- preserve the semantic commitments defined in Phase 11.1,
+\- preserve the semantic commitments defined in Phase 11.1,
 
-\- realize the minimal structures defined in Phase 11.2,
+\- realize the minimal structures defined in Phase 11.2,
 
 \- provide an unambiguous point of semantic interpretation, and
 
@@ -120,7 +124,7 @@ The explicit graph‑based representation is selected on semantic grounds.
 
 
 
-This aligns directly with the minimal state model defined in Phase 11.2.
+This aligns directly with the minimal state model defined in Phase 11.2.
 
 
 
@@ -134,13 +138,15 @@ This aligns directly with the minimal state model defined in Phase 11.2.
 
 \- Partial ordering is expressed naturally through dependency edges.
 
-\- Independent execution steps remain unordered unless meaning requires otherwise.
+\- Independent execution steps remain unordered unless meaning requires
+
+&#x20; otherwise.
 
 \- Ordering is semantic, not temporal.
 
 
 
-This satisfies the execution ordering requirements without imposing
+This satisfies the execution ordering requirements without imposing an
 
 artificial total order.
 
@@ -180,7 +186,9 @@ trace model.
 
 &#x20; observing semantic consequences.
 
-\- Affected execution steps are directly identifiable through graph reachability.
+\- Affected execution steps are directly identifiable through graph
+
+&#x20; reachability.
 
 
 
@@ -196,9 +204,9 @@ This enables counterfactual explanation without speculative execution.
 
 
 
-The following representation families were considered and rejected as the
+The following representation families were considered and rejected as
 
-reference execution model, strictly for semantic reasons.
+the reference execution model, strictly for semantic reasons.
 
 
 
@@ -306,17 +314,19 @@ With this selection:
 
 
 
-\- Phase 11.4 is complete.
+\- Phase 11.4 is complete.
 
 \- SouperSport now has a canonical reference execution model.
 
-\- All subsequent implementation work must preserve this semantic interpretation.
+\- All subsequent implementation work must preserve this semantic
+
+&#x20; interpretation.
 
 
 
-The project may now proceed to \*\*Phase 11.5 — Reference Execution Sketch\*\*
+The project may now proceed to \*\*Phase 11.5 — Reference Execution
 
-when ready.
+Sketch\*\* when ready.
 
 
 
@@ -330,7 +340,7 @@ when ready.
 
 The semantic foundation of SouperSport is now complete from intent
 
-(Phase 11.1) through realization choice (Phase 11.4).
+(Phase 11.1) through realization choice (Phase 11.4).
 
 
 

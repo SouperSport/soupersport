@@ -6,27 +6,37 @@
 
 
 
-This document defines the \*\*minimal semantic obligations\*\* of a SouperSport-conformant system.
+This document defines the \*\*minimal semantic obligations\*\* of a
+
+SouperSport‑conformant system.
 
 
 
-It specifies \*\*what semantic artifacts must exist\*\* when a program is executed or refused, \*\*independent of implementation strategy, tooling, user interface, or performance concerns\*\*.
+It specifies \*\*what semantic artifacts must exist\*\* when a program is
+
+executed or refused, independent of implementation strategy, tooling,
+
+user interface, or performance concerns.
 
 
 
 This document:
 
-\- defines \*\*obligations\*\*, not mechanisms
-
-\- is normative for any system claiming conformance
-
-\- does not prescribe data formats, schemas, or algorithms
-
-\- does not describe user experience or tooling behavior
 
 
+\- defines \*\*obligations\*\*, not mechanisms,
 
-Anything not explicitly required here is \*\*unconstrained by this contract\*\*.
+\- is normative for any system claiming conformance,
+
+\- does not prescribe data formats, schemas, or algorithms,
+
+\- does not describe user experience or tooling behavior.
+
+
+
+Anything not explicitly required here is \*\*unconstrained by this
+
+contract\*\*.
 
 
 
@@ -38,17 +48,21 @@ Anything not explicitly required here is \*\*unconstrained by this contract\*\*.
 
 
 
-If a system claims to execute or refuse a SouperSport program, it must be able to \*\*account for what occurred using explicit semantic artifacts\*\*.
+If a system claims to execute or refuse a SouperSport program, it must be
+
+able to \*\*account for what occurred using explicit semantic artifacts\*\*.
 
 
 
 If required artifacts are missing, incomplete, or unverifiable:
 
-\- the situation is a \*\*tooling or executor failure\*\*
 
-\- not a semantic outcome
 
-\- not an acceptable approximation
+\- the situation is a \*\*tooling or executor failure\*\*,
+
+\- not a semantic outcome,
+
+\- and not an acceptable approximation.
 
 
 
@@ -64,7 +78,9 @@ Semantic meaning exists \*\*only\*\* where these obligations are met.
 
 
 
-For every execution attempt — successful or refused — a conformant system \*\*must produce or make available\*\* the following artifacts.
+For every execution attempt — successful or refused — a conformant system
+
+\*\*must produce or make available\*\* the following artifacts.
 
 
 
@@ -94,17 +110,21 @@ No other outcome is valid.
 
 
 
-The system must identify the complete set of inputs that the execution or refusal is defined over.
+The system must identify the complete set of inputs that the execution or
+
+refusal is defined over.
 
 
 
-These inputs must:
+These inputs must be:
 
-\- be explicit
 
-\- be complete
 
-\- be sufficient to replay or reevaluate legality
+\- explicit,
+
+\- complete,
+
+\- sufficient to replay or reevaluate legality.
 
 
 
@@ -122,11 +142,13 @@ Ambient, implicit, or undeclared inputs are not permitted.
 
 If execution depends on prior state, that state must be:
 
-\- explicitly identified
 
-\- bounded
 
-\- reproducible
+\- explicitly identified,
+
+\- bounded,
+
+\- reproducible.
 
 
 
@@ -146,13 +168,13 @@ The system must construct a \*\*semantic execution trace\*\* representing:
 
 
 
-\- the sequence or structure of semantic steps
+\- the sequence or structure of semantic steps,
 
-\- ordering and dependency relationships
+\- ordering and dependency relationships,
 
-\- concurrency and synchronization where applicable
+\- concurrency and synchronization where applicable,
 
-\- waiting, stalling, or deadlock as semantic events
+\- waiting, stalling, or deadlock as semantic events.
 
 
 
@@ -170,15 +192,19 @@ A trace is \*\*part of program meaning\*\*, not diagnostic output.
 
 The system must be able to account for:
 
-\- which semantic laws were applied
-
-\- where enforcement occurred
-
-\- which law(s) caused refusal, if applicable
 
 
+\- which semantic laws were applied,
 
-This record may be implicit within other artifacts but must be recoverable.
+\- where enforcement occurred,
+
+\- which law or laws caused refusal, if applicable.
+
+
+
+This record may be implicit within other artifacts but must be
+
+recoverable.
 
 
 
@@ -192,15 +218,19 @@ This record may be implicit within other artifacts but must be recoverable.
 
 If execution completes successfully, the resulting state must be:
 
-\- explicit
-
-\- reproducible
-
-\- attributable to the declared inputs and trace
 
 
+\- explicit,
 
-If execution does not complete, absence of a resulting state must be explicit.
+\- reproducible,
+
+\- attributable to the declared inputs and trace.
+
+
+
+If execution does not complete, absence of a resulting state must be
+
+explicit.
 
 
 
@@ -214,11 +244,13 @@ If execution does not complete, absence of a resulting state must be explicit.
 
 If the outcome is refusal, the system must provide:
 
-\- a clear identification of illegality or unprovability
 
-\- the semantic rule or boundary violated
 
-\- sufficient context to distinguish \*what failed\* from \*why it failed\*
+\- a clear identification of illegality or unprovability,
+
+\- the semantic rule or boundary violated,
+
+\- sufficient context to distinguish \*what failed\* from \*why it failed\*.
 
 
 
@@ -238,7 +270,7 @@ Within regions that claim determinism:
 
 
 
-\- identical canonical inputs
+\- identical canonical inputs,
 
 \- identical initial state
 
@@ -246,15 +278,17 @@ Within regions that claim determinism:
 
 must yield:
 
-\- identical execution outcome
-
-\- identical semantic trace
-
-\- identical resulting state (if any)
 
 
+\- identical execution outcome,
 
-Any divergence constitutes non-conformance.
+\- identical semantic trace,
+
+\- identical resulting state (if any).
+
+
+
+Any divergence constitutes non‑conformance.
 
 
 
@@ -266,17 +300,21 @@ Any divergence constitutes non-conformance.
 
 
 
-A system may fail to render, visualize, serialize, or present artifacts due to resource or tooling limitations.
+A system may fail to render, visualize, serialize, or present artifacts
+
+due to resource or tooling limitations.
 
 
 
 Such failures must be:
 
-\- explicit
 
-\- identified as tooling limitations
 
-\- never presented as semantic uncertainty or absence
+\- explicit,
+
+\- identified as tooling limitations,
+
+\- never presented as semantic uncertainty or absence.
 
 
 
@@ -296,17 +334,17 @@ The following may \*\*not\*\* substitute for required artifacts:
 
 
 
-\- logs
+\- logs,
 
-\- debug output
+\- debug output,
 
-\- heuristic summaries
+\- heuristic summaries,
 
-\- cached results
+\- cached results,
 
-\- prior executions
+\- prior executions,
 
-\- inferred explanations
+\- inferred explanations.
 
 
 
@@ -322,11 +360,13 @@ Only explicitly constructed semantic artifacts satisfy this contract.
 
 
 
-A system \*\*must not\*\* claim SouperSport conformance if it cannot satisfy all requirements in this document.
+A system \*\*must not\*\* claim SouperSport conformance if it cannot satisfy
+
+all requirements in this document.
 
 
 
-Partial implementation is permitted.
+Partial implementation is permitted.  
 
 Partial conformance is not.
 
@@ -336,25 +376,27 @@ Partial conformance is not.
 
 
 
-\## Non-Goals
+\## Non‑Goals
 
 
 
 This document deliberately does not specify:
 
-\- surface syntax
 
-\- intermediate representations
 
-\- storage formats
+\- surface syntax,
 
-\- performance characteristics
+\- intermediate representations,
 
-\- user interface behavior
+\- storage formats,
 
-\- tooling design
+\- performance characteristics,
 
-\- optimization techniques
+\- user interface behavior,
+
+\- tooling design,
+
+\- optimization techniques.
 
 
 

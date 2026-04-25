@@ -1,4 +1,4 @@
-\# Semantic Target — Phase 11.1
+\# Semantic Target
 
 
 
@@ -8,9 +8,9 @@ This document defines the \*\*semantic execution target\*\* for SouperSport.
 
 Its purpose is to specify—without reference to syntax, tooling, or
 
-implementation—the smallest executable meaning that can correctly
+implementation—the smallest executable meaning that can correctly be
 
-be called a SouperSport execution under this semantic model.
+called a SouperSport execution under this semantic model.
 
 
 
@@ -40,9 +40,9 @@ A SouperSport execution is considered \*\*meaning‑preserving\*\* if:
 
 \- repeatable under deterministic rules,
 
-\- and explainable in terms of declared dependencies rather than
+\- and explainable in terms of declared dependencies rather than observed
 
-&#x20; observed behavior alone.
+&#x20; behavior alone.
 
 
 
@@ -156,11 +156,13 @@ across execution steps.
 
 State does not include:
 
-\- transient intermediate values
 
-\- implicit caches
 
-\- runtime-only artifacts not declared as state
+\- transient intermediate values,
+
+\- implicit caches,
+
+\- runtime‑only artifacts not declared as state.
 
 
 
@@ -206,7 +208,7 @@ Two states are considered equivalent if:
 
 &#x20; equivalence rules, and
 
-\- No refused or undeclared influence contributed to their values.
+\- no refused or undeclared influence contributed to their values.
 
 
 
@@ -238,6 +240,8 @@ An execution step represents a single, declared transformation of:
 
 Each step must:
 
+
+
 \- have declared dependencies,
 
 \- produce declared effects,
@@ -259,6 +263,8 @@ Execution is the ordered composition of execution steps.
 
 
 Execution order must be:
+
+
 
 \- explicit,
 
@@ -293,6 +299,8 @@ A trace is the minimal information required to:
 
 
 A trace must contain:
+
+
 
 \- execution steps taken,
 
@@ -376,11 +384,11 @@ Counterfactuals require explanation, not speculation.
 
 
 
-\## 6. Phase 11.1 Non‑Goals
+\## 6. Non‑Goals
 
 
 
-Phase 11.1 does \*\*not\*\* address:
+This document does \*\*not\*\* address:
 
 
 
@@ -398,7 +406,7 @@ Phase 11.1 does \*\*not\*\* address:
 
 
 
-These are intentionally deferred to later phases.
+These concerns are intentionally excluded from the semantic target.
 
 
 
@@ -406,27 +414,23 @@ These are intentionally deferred to later phases.
 
 
 
-\## 7. Success Criteria for Phase 11.1
+\## 7. Stability Criteria
 
 
 
-Phase 11.1 is complete when:
+This semantic target is considered stable when:
 
 
 
-\- This semantic target document exists and is stable
+\- The obligations defined here remain unchanged,
 
-\- All future implementation decisions can be traced back to it
+\- Future design and implementation decisions can be traced back to it,
 
-\- No code has been written
+\- No ambiguity exists about what constitutes executable meaning,
 
-\- No enforcement mechanisms have been introduced
-
-\- No ambiguity remains about what constitutes executable meaning
+\- And no execution may claim conformance without satisfying these rules.
 
 
 
-At that point, the project may proceed to Phase 11.2:
-
-Minimal State and Execution Modeling.
+This document defines \*\*what it means for SouperSport to execute\*\*.
 

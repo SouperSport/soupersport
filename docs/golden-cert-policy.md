@@ -6,6 +6,10 @@ Golden certificates define the canonical semantics of the system.
 
 
 
+\---
+
+
+
 \## Rules
 
 
@@ -22,6 +26,10 @@ Golden certificates define the canonical semantics of the system.
 
 
 
+\---
+
+
+
 \## Update Procedure
 
 
@@ -30,7 +38,9 @@ Golden certificates define the canonical semantics of the system.
 
 2\. Regenerate the golden certificate explicitly.
 
-3\. Commit ONLY the golden certificate change with a message explaining why semantics changed.
+3\. Commit ONLY the golden certificate change with a message explaining why
+
+&#x20;  semantics changed.
 
 
 

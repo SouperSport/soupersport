@@ -12,6 +12,10 @@ This rationale explains key design choices validated through stress testing.
 
 
 
+\---
+
+
+
 \## Why Determinism Is Region‑Scoped
 
 
@@ -24,9 +28,15 @@ on all code while making guarantees strong where they matter.
 
 This allows:
 
+
+
 \- ordinary I/O, networking, and interaction,
 
 \- alongside strictly deterministic computation.
+
+
+
+\---
 
 
 
@@ -43,6 +53,10 @@ it is constrained to explicit boundaries where it becomes declared input.
 This prevents accidental observation of nondeterminism while preserving
 
 practical expressiveness.
+
+
+
+\---
 
 
 
@@ -66,11 +80,17 @@ Operational detail is left to tooling, not the language.
 
 
 
+\---
+
+
+
 \## Why Trace Granularity Is Configurable
 
 
 
 Security and correctness require semantic stability.
+
+
 
 Developer productivity requires flexibility.
 
@@ -79,6 +99,10 @@ Developer productivity requires flexibility.
 Observability profiles allow different tooling needs
 
 without changing program meaning.
+
+
+
+\---
 
 
 
@@ -98,11 +122,17 @@ ensures correctness guarantees remain meaningful across platforms.
 
 
 
+\---
+
+
+
 \## Outcome
 
 
 
 Under stress testing, this model prevents:
+
+
 
 \- hidden nondeterminism,
 
