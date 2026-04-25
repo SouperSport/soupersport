@@ -34,9 +34,15 @@ cert_cf.json
 ## (NOT normative – do not publish yet)
 ## -------------------------------------------------
 
+# Exploratory only – still excluded
 reference-execution-sketch.md
-trace-schema.md
-provenance-payload.md
+
+## -------------------------------------------------
+## Public normative specifications (explicitly tracked)
+## -------------------------------------------------
+
+!docs/trace-schema.md
+!docs/provenance-payload.md
 
 ## -------------------------------------------------
 ## OS / editor noise
