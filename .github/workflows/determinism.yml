@@ -18,50 +18,50 @@ jobs:
         uses: actions/checkout@v4
 
       # ------------------------------------------------------------
-      # Phase 2: Semantic Authority Transfer (Pre‑Transfer)
+      # Phase 2: Semantic Authority Transfer
       #
-      # CI responsibilities (and ONLY these):
+      # CI responsibilities:
       #   - invoke the semantic executor
       #   - propagate executor success or refusal
-      #   - compare emitted artifacts byte‑canonically to goldens
+      #   - compare executor-emitted artifacts byte-canonically
       #
       # CI MUST NOT:
-      #   - reconstruct execution
       #   - evaluate legality
+      #   - reconstruct execution
       #   - interpret traces or refusals
-      #   - regenerate golden artifacts
+      #   - regenerate goldens
       # ------------------------------------------------------------
 
       - name: Run reference semantic executor
         shell: bash
         run: |
           set -euo pipefail
-          ./executor/run_reference_executor.sh
+          ./souper_executor.exe
 
       - name: Verify executor emitted required artifacts
         shell: bash
         run: |
           set -euo pipefail
 
-          # Executor must emit either a semantic trace OR a refusal
+          # Executor must emit either a semantic trace or a refusal
           if [ ! -f artifacts/semantic-trace.json ] && \
              [ ! -f artifacts/refusal.json ]; then
             echo "::error::Executor emitted neither semantic trace nor refusal artifact."
             exit 1
           fi
 
-          # Deterministic executions must emit provenance
+          # If execution occurred, provenance must exist
           if [ -f artifacts/semantic-trace.json ] && [ ! -f artifacts/provenance.json ]; then
             echo "::error::Semantic trace exists but provenance payload is missing."
             exit 1
           fi
 
-      - name: Compare executor artifacts against goldens (byte‑canonical)
+      - name: Compare executor artifacts against goldens (byte-canonical)
         shell: bash
         run: |
           set -euo pipefail
 
-          # Successful execution comparison
+          # Successful execution: compare semantic trace
           if [ -f artifacts/semantic-trace.json ]; then
             if [ ! -f goldens/semantic-trace.json ]; then
               echo "::error::Golden semantic trace is missing."
@@ -70,7 +70,7 @@ jobs:
             cmp artifacts/semantic-trace.json goldens/semantic-trace.json
           fi
 
-          # Provenance comparison (only when execution succeeds)
+          # Provenance comparison
           if [ -f artifacts/provenance.json ]; then
             if [ ! -f goldens/provenance.json ]; then
               echo "::error::Golden provenance payload is missing."
