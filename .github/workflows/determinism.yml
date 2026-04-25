@@ -12,27 +12,78 @@ env:
 jobs:
   determinism:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Block golden cert changes outside the manual update workflow
-      - name: Block golden cert changes outside update workflow
+      # ------------------------------------------------------------
+      # Phase 2: Semantic Authority Transfer (Pre‑Transfer)
+      #
+      # CI responsibilities (and ONLY these):
+      #   - invoke the semantic executor
+      #   - propagate executor success or refusal
+      #   - compare emitted artifacts byte‑canonically to goldens
+      #
+      # CI MUST NOT:
+      #   - reconstruct execution
+      #   - evaluate legality
+      #   - interpret traces or refusals
+      #   - regenerate golden artifacts
+      # ------------------------------------------------------------
+
+      - name: Run reference semantic executor
         shell: bash
-        if: github.event_name != 'workflow_dispatch'
         run: |
-          if git diff --name-only "${{ github.event.before }}...${{ github.sha }}" | grep -q "golden\.cert\.json"; then
-            echo "::error::Golden certificates may only be updated via the Update Golden workflow."
+          set -euo pipefail
+          ./executor/run_reference_executor.sh
+
+      - name: Verify executor emitted required artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Executor must emit either a semantic trace OR a refusal
+          if [ ! -f artifacts/semantic-trace.json ] && \
+             [ ! -f artifacts/refusal.json ]; then
+            echo "::error::Executor emitted neither semantic trace nor refusal artifact."
             exit 1
           fi
 
-      # Verify provenance signatures (STRICT MODE)
-      # Missing or invalid signatures FAIL CI.
-      - name: Verify provenance signatures (strict mode)
-        shell: pwsh
-        run: pwsh tools/verify-provenance-suite.ps1 -PublicKeyJsonPath .keys/determinism-signing.public.json -CasesPath examples/cases.yml -Mode strict
+          # Deterministic executions must emit provenance
+          if [ -f artifacts/semantic-trace.json ] && [ ! -f artifacts/provenance.json ]; then
+            echo "::error::Semantic trace exists but provenance payload is missing."
+            exit 1
+          fi
 
-      # Run the full determinism suite over examples/cases.yml
-      - name: Run determinism suite (golden + counterfactual)
-        shell: pwsh
-        run: pwsh tools/run-determinism-suite.ps1 -CasesPath examples/cases.yml -CounterfactualMode alt
+      - name: Compare executor artifacts against goldens (byte‑canonical)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Successful execution comparison
+          if [ -f artifacts/semantic-trace.json ]; then
+            if [ ! -f goldens/semantic-trace.json ]; then
+              echo "::error::Golden semantic trace is missing."
+              exit 1
+            fi
+            cmp artifacts/semantic-trace.json goldens/semantic-trace.json
+          fi
+
+          # Provenance comparison (only when execution succeeds)
+          if [ -f artifacts/provenance.json ]; then
+            if [ ! -f goldens/provenance.json ]; then
+              echo "::error::Golden provenance payload is missing."
+              exit 1
+            fi
+            cmp artifacts/provenance.json goldens/provenance.json
+          fi
+
+          # Refusal comparison
+          if [ -f artifacts/refusal.json ]; then
+            if [ ! -f goldens/refusal.json ]; then
+              echo "::error::Golden refusal artifact is missing."
+              exit 1
+            fi
+            cmp artifacts/refusal.json goldens/refusal.json
+          fi
