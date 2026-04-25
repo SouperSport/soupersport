@@ -11,7 +11,7 @@ env:
 
 jobs:
   determinism:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -33,57 +33,57 @@ jobs:
       # ------------------------------------------------------------
 
       - name: Run reference semantic executor
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
-          ./souper_executor.exe
+          $ErrorActionPreference = "Stop"
+          .\souper_executor.exe
 
       - name: Verify executor emitted required artifacts
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
+          $ErrorActionPreference = "Stop"
 
-          # Executor must emit either a semantic trace or a refusal
-          if [ ! -f artifacts/semantic-trace.json ] && \
-             [ ! -f artifacts/refusal.json ]; then
-            echo "::error::Executor emitted neither semantic trace nor refusal artifact."
-            exit 1
-          fi
+          if (!(Test-Path artifacts\semantic-trace.json) -and
+              !(Test-Path artifacts\refusal.json)) {
+            Write-Error "Executor emitted neither semantic trace nor refusal artifact."
+          }
 
-          # If execution occurred, provenance must exist
-          if [ -f artifacts/semantic-trace.json ] && [ ! -f artifacts/provenance.json ]; then
-            echo "::error::Semantic trace exists but provenance payload is missing."
-            exit 1
-          fi
+          if (Test-Path artifacts\semantic-trace.json -and
+              !(Test-Path artifacts\provenance.json)) {
+            Write-Error "Semantic trace exists but provenance payload is missing."
+          }
 
       - name: Compare executor artifacts against goldens (byte-canonical)
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
+          $ErrorActionPreference = "Stop"
 
-          # Successful execution: compare semantic trace
-          if [ -f artifacts/semantic-trace.json ]; then
-            if [ ! -f goldens/semantic-trace.json ]; then
-              echo "::error::Golden semantic trace is missing."
-              exit 1
-            fi
-            cmp artifacts/semantic-trace.json goldens/semantic-trace.json
-          fi
+          if (Test-Path artifacts\semantic-trace.json) {
+            if (!(Test-Path goldens\semantic-trace.json)) {
+              Write-Error "Golden semantic trace is missing."
+            }
+            if ((Get-FileHash artifacts\semantic-trace.json).Hash -ne
+                (Get-FileHash goldens\semantic-trace.json).Hash) {
+              Write-Error "Semantic trace does not match golden."
+            }
+          }
 
-          # Provenance comparison
-          if [ -f artifacts/provenance.json ]; then
-            if [ ! -f goldens/provenance.json ]; then
-              echo "::error::Golden provenance payload is missing."
-              exit 1
-            fi
-            cmp artifacts/provenance.json goldens/provenance.json
-          fi
+          if (Test-Path artifacts\provenance.json) {
+            if (!(Test-Path goldens\provenance.json)) {
+              Write-Error "Golden provenance is missing."
+            }
+            if ((Get-FileHash artifacts\provenance.json).Hash -ne
+                (Get-FileHash goldens\provenance.json).Hash) {
+              Write-Error "Provenance payload does not match golden."
+            }
+          }
 
-          # Refusal comparison
-          if [ -f artifacts/refusal.json ]; then
-            if [ ! -f goldens/refusal.json ]; then
-              echo "::error::Golden refusal artifact is missing."
-              exit 1
-            fi
-            cmp artifacts/refusal.json goldens/refusal.json
-          fi
+          if (Test-Path artifacts\refusal.json) {
+            if (!(Test-Path goldens\refusal.json)) {
+              Write-Error "Golden refusal artifact is missing."
+            }
+            if ((Get-FileHash artifacts\refusal.json).Hash -ne
+                (Get-FileHash goldens\refusal.json).Hash) {
+              Write-Error "Refusal artifact does not match golden."
+            }
+          }
