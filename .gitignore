@@ -1,10 +1,10 @@
-# -------------------------------------------------
-# Determinism & execution artifacts
-# -------------------------------------------------
-
-cf/
+## -------------------------------------------------
+## Determinism & execution artifacts
+## -------------------------------------------------
 
 # Local sealed scratch inputs (never commit)
+cf/
+
 sealed_input.json
 
 # Allow canonical sealed inputs for determinism cases
@@ -19,10 +19,9 @@ cert_cf.json
 # Allow canonical golden certificates
 !examples/**/golden.cert.json
 
-
-# -------------------------------------------------
-# Signing keys (Stage 9)
-# -------------------------------------------------
+## -------------------------------------------------
+## Signing keys (Stage 9)
+## -------------------------------------------------
 
 # Never commit private keys or key directories by default
 .keys/
@@ -30,10 +29,18 @@ cert_cf.json
 # Allow committing ONLY the public key JSON (explicit)
 !.keys/determinism-signing.public.json
 
+## -------------------------------------------------
+## Draft / exploratory specification artifacts
+## (NOT normative – do not publish yet)
+## -------------------------------------------------
 
-# -------------------------------------------------
-# OS / editor noise
-# -------------------------------------------------
+reference-execution-sketch.md
+trace-schema.md
+provenance-payload.md
+
+## -------------------------------------------------
+## OS / editor noise
+## -------------------------------------------------
 
 .DS_Store
 Thumbs.db
@@ -41,9 +48,8 @@ Thumbs.db
 *.tmp
 *.bak
 
-
-# -------------------------------------------------
-# PowerShell tooling noise
-# -------------------------------------------------
+## -------------------------------------------------
+## PowerShell tooling noise
+## -------------------------------------------------
 
 Microsoft.PowerShell_profile.ps1
