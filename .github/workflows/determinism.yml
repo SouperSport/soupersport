@@ -18,11 +18,11 @@ jobs:
         uses: actions/checkout@v4
 
       # ------------------------------------------------------------
-      # Phase 2: Semantic Authority Transfer
+      # Phase 2: Semantic Authority Transfer (Best Practice)
       #
       # CI responsibilities:
-      #   - invoke the semantic executor
-      #   - propagate executor success or refusal
+      #   - build the semantic executor
+      #   - run the executor
       #   - compare executor-emitted artifacts byte-canonically
       #
       # CI MUST NOT:
@@ -32,11 +32,21 @@ jobs:
       #   - regenerate goldens
       # ------------------------------------------------------------
 
+      - name: Build reference semantic executor
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          pwsh .\build-executor.ps1
+
       - name: Run reference semantic executor
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          .\souper_executor.exe
+          $exe = Get-ChildItem -Recurse -Filter souper_executor.exe | Select-Object -First 1
+          if (-not $exe) {
+            Write-Error "Built executor not found"
+          }
+          & $exe.FullName
 
       - name: Verify executor emitted required artifacts
         shell: pwsh
@@ -59,9 +69,6 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           if (Test-Path artifacts\semantic-trace.json) {
-            if (!(Test-Path goldens\semantic-trace.json)) {
-              Write-Error "Golden semantic trace is missing."
-            }
             if ((Get-FileHash artifacts\semantic-trace.json).Hash -ne
                 (Get-FileHash goldens\semantic-trace.json).Hash) {
               Write-Error "Semantic trace does not match golden."
@@ -69,9 +76,6 @@ jobs:
           }
 
           if (Test-Path artifacts\provenance.json) {
-            if (!(Test-Path goldens\provenance.json)) {
-              Write-Error "Golden provenance is missing."
-            }
             if ((Get-FileHash artifacts\provenance.json).Hash -ne
                 (Get-FileHash goldens\provenance.json).Hash) {
               Write-Error "Provenance payload does not match golden."
@@ -79,9 +83,6 @@ jobs:
           }
 
           if (Test-Path artifacts\refusal.json) {
-            if (!(Test-Path goldens\refusal.json)) {
-              Write-Error "Golden refusal artifact is missing."
-            }
             if ((Get-FileHash artifacts\refusal.json).Hash -ne
                 (Get-FileHash goldens\refusal.json).Hash) {
               Write-Error "Refusal artifact does not match golden."
