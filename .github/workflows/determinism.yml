@@ -14,62 +14,88 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       # ------------------------------------------------------------
       # Semantic Authority Enforcement
       #
-      # CI:
-      #   - runs the reference executor
-      #   - verifies emitted artifacts only
+      # CI responsibilities:
+      #   - run the reference semantic executor
+      #   - fail if executor violates semantic contract
+      #   - compare emitted artifacts byte-canonically to goldens
       #
-      # CI MUST NOT interpret semantics.
+      # CI MUST NOT:
+      #   - interpret execution meaning
+      #   - infer legality
+      #   - reconstruct execution
+      #   - regenerate goldens
       # ------------------------------------------------------------
 
       - name: Run reference semantic executor
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          Write-Host "Running reference semantic executor..."
           .\souper_executor.exe
+          Write-Host "Executor finished."
 
       - name: Verify executor emitted required artifacts
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
 
+          Write-Host "Checking for semantic artifacts..."
+
           if (!(Test-Path artifacts\semantic-trace.json) -and
               !(Test-Path artifacts\refusal.json)) {
+            Write-Host "FAILURE: No semantic-trace.json AND no refusal.json were produced."
             Write-Error "Executor emitted neither semantic trace nor refusal artifact."
           }
 
           if (Test-Path artifacts\semantic-trace.json -and
               !(Test-Path artifacts\provenance.json)) {
+            Write-Host "FAILURE: semantic-trace.json exists but provenance.json is missing."
             Write-Error "Semantic trace exists but provenance payload is missing."
           }
+
+          Write-Host "Artifact presence check passed."
 
       - name: Compare executor artifacts against goldens (byte-canonical)
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
 
+          Write-Host "Beginning golden comparisons..."
+
           if (Test-Path artifacts\semantic-trace.json) {
+            Write-Host "Comparing semantic-trace.json..."
             if ((Get-FileHash artifacts\semantic-trace.json).Hash -ne
                 (Get-FileHash goldens\semantic-trace.json).Hash) {
+              Write-Host "FAILURE: semantic-trace.json hash does not match golden."
               Write-Error "Semantic trace does not match golden."
             }
+            Write-Host "semantic-trace.json matches golden."
           }
 
           if (Test-Path artifacts\provenance.json) {
+            Write-Host "Comparing provenance.json..."
             if ((Get-FileHash artifacts\provenance.json).Hash -ne
                 (Get-FileHash goldens\provenance.json).Hash) {
+              Write-Host "FAILURE: provenance.json hash does not match golden."
               Write-Error "Provenance payload does not match golden."
             }
+            Write-Host "provenance.json matches golden."
           }
 
           if (Test-Path artifacts\refusal.json) {
+            Write-Host "Comparing refusal.json..."
             if ((Get-FileHash artifacts\refusal.json).Hash -ne
                 (Get-FileHash goldens\refusal.json).Hash) {
+              Write-Host "FAILURE: refusal.json hash does not match golden."
               Write-Error "Refusal artifact does not match golden."
             }
+            Write-Host "refusal.json matches golden."
           }
+
+          Write-Host "Golden comparisons complete."
