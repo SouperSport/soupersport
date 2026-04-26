@@ -20,6 +20,16 @@ cert_cf.json
 !examples/**/golden.cert.json
 
 ## -------------------------------------------------
+## Canonical semantic intake (EXPLICIT EXCEPTION)
+## -------------------------------------------------
+
+# Ignore all inputs by default
+inputs/**
+
+# Explicitly allow the single governed semantic intake
+!inputs/request.json
+
+## -------------------------------------------------
 ## Signing keys (Stage 9)
 ## -------------------------------------------------
 
