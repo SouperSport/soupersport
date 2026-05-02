@@ -1,33 +1,32 @@
-## Minimal Execution Model — Phase 11.2
+### Minimal Execution Model
 
-This document refines the semantic commitments defined in
-`semantic-target.md` by describing the **minimum concrete structures**
-that must exist to support a valid SouperSport execution.
+This document refines the semantic commitments defined in semantic-target.md by describing the **minimum concrete structures** that must exist to support a valid SouperSport execution.
 
-This document does not introduce syntax, tooling, execution engines,
-or implementation strategies. It exists to answer **what must exist**,
-not **how it is built**.
+This document does not introduce syntax, tooling, execution engines, or implementation strategies.
+
+It exists to answer:
+
+- **what must exist**, not  
+- **how it is built**
 
 ---
 
 ## 1. Minimal State Representation
 
-This section defines the **minimum structure required to represent
-state** in a SouperSport execution, independent of syntax, storage
-format, or implementation strategy.
+This section defines the **minimum structure required to represent state** in a SouperSport execution, independent of syntax, storage format, or implementation strategy.
 
 ### 1.1 What Constitutes State
 
 State consists solely of values that are:
 
-- explicitly declared as persistent across execution steps, and
-- intended to participate in semantic reasoning and equivalence.
+- explicitly declared as persistent across execution steps, and  
+- intended to participate in semantic reasoning and equivalence  
 
 State does not include:
 
-- transient intermediate values,
-- implicit caches,
-- runtime artifacts not declared as state.
+- transient intermediate values  
+- implicit caches  
+- runtime artifacts not declared as state  
 
 Only declared state contributes to the meaning of an execution.
 
@@ -37,14 +36,14 @@ Only declared state contributes to the meaning of an execution.
 
 Every execution begins from an initial state.
 
-The initial state is defined as the complete set of declared state
-values available before any execution steps occur. These values must be:
+The initial state is defined as the complete set of declared state values available before any execution steps occur.
 
-- explicitly provided, or
-- explicitly derived from declared inputs using declared rules.
+These values must be:
 
-No implicit defaults, ambient values, or undeclared initialization
-behavior are permitted.
+- explicitly provided, or  
+- explicitly derived from declared inputs using declared rules  
+
+No implicit defaults, ambient values, or undeclared initialization behavior are permitted.
 
 ---
 
@@ -54,13 +53,11 @@ State evolves through **declared transformations**.
 
 Each transformation:
 
-- consumes prior state (and possibly declared inputs),
-- produces a new state, and
-- is attributable to a specific declared rule or operation.
+- consumes prior state (and possibly declared inputs)  
+- produces a new state  
+- is attributable to a specific declared rule or operation  
 
-State transitions must be **locally attributable**, meaning the cause
-of any state change is identifiable without reference to execution order
-outside the declared model.
+State transitions must be **locally attributable**, meaning the cause of any state change is identifiable without reference to execution order outside the declared model.
 
 No state may change without a declared cause.
 
@@ -68,15 +65,13 @@ No state may change without a declared cause.
 
 ### 1.4 Minimal Information Content of State
 
-For state to support semantic reasoning, it must contain sufficient
-information to allow:
+For state to support semantic reasoning, it must contain sufficient information to allow:
 
-- comparison with other states for equivalence,
-- explanation of downstream effects, and
-- attribution of changes to declared causes.
+- comparison with other states for equivalence  
+- explanation of downstream effects  
+- attribution of changes to declared causes  
 
-State must not encode historical execution details unless those details
-are themselves declared as part of state.
+State must not encode historical execution details unless those details are themselves declared as part of state.
 
 ---
 
@@ -84,12 +79,10 @@ are themselves declared as part of state.
 
 Two states are considered equivalent if:
 
-- all declared state components are equivalent under the system’s
-  equivalence rules, and
-- no refused or undeclared influences contributed to their values.
+- all declared state components are equivalent under the system’s equivalence rules, and  
+- no refused or undeclared influences contributed to their values  
 
-State equivalence is determined independently of how the state was
-reached and independently of execution history.
+State equivalence is determined independently of how the state was reached and independently of execution history.
 
 ---
 
@@ -97,340 +90,259 @@ reached and independently of execution history.
 
 The minimal state representation does not require:
 
-- a specific data structure,
-- a serialization format,
-- versioning or snapshot mechanisms,
-- temporal ordering information, or
-- performance‑oriented optimizations.
+- a specific data structure  
+- a serialization format  
+- versioning or snapshot mechanisms  
+- temporal ordering information  
+- performance optimizations  
 
-These concerns are intentionally deferred to later phases.
+These are intentionally out of scope.
 
 ---
 
-### 1.7 Role of State in Later Phases
+### 1.7 Role of State
 
-This section defines what state **must mean**, not how it is stored
-or manipulated.
+This section defines what state **must mean**, not how it is stored or manipulated.
 
-Future phases may introduce concrete representations or optimizations,
-but only insofar as they preserve the semantic commitments defined here
-and in `semantic-target.md`.
+Future work may introduce representations or optimizations only if they preserve these semantics.
 
 ---
 
 ## 2. Minimal Execution Ordering
 
-This section defines the **minimum ordering guarantees** required for
-execution to support semantic reasoning in SouperSport.
+This section defines the **minimum ordering guarantees** required for execution to support semantic reasoning.
 
-Execution ordering exists to make causality explicit, not to optimize
-performance or scheduling.
+Execution ordering exists to make causality explicit.
 
 ---
 
 ### 2.1 What Execution Ordering Represents
 
-Execution ordering represents the **declared causal relationship**
-between execution steps.
+Execution ordering represents **declared causal relationships** between execution steps.
 
-Ordering is not defined in terms of time or scheduling, but in terms of
-dependency:
+It defines:
 
-- which execution steps depend on the results of others, and
-- which steps may be considered independent under the semantic model.
+- which steps depend on others  
+- which steps are independent  
 
-Execution order exists to preserve meaning, not to control evaluation
-strategy.
+Ordering is not defined in terms of time or scheduling.
 
 ---
 
-### 2.2 Declared Order and Dependencies
+### 2.2 Declared Dependencies
 
 An execution step may only depend on:
 
-- explicitly declared inputs,
-- explicitly declared state, and
-- the results of explicitly identified predecessor steps.
+- declared inputs  
+- declared state  
+- explicitly identified predecessor steps  
 
 All dependencies must be declared.
 
-No execution step may implicitly depend on:
+No step may implicitly depend on:
 
-- ambient ordering,
-- evaluation side effects, or
-- undeclared prior computation.
-
-Declared dependencies define a **partial order** over execution steps.
+- ambient ordering  
+- evaluation side effects  
+- undeclared computation  
 
 ---
 
 ### 2.3 Minimal Ordering Requirement
 
-The minimal requirement for execution ordering is:
+The minimum requirement is:
 
-- that the dependency structure of all execution steps is explicit, and
-- that this structure is sufficient to reproduce equivalent execution
-  outcomes under deterministic constraints.
+- dependency structure must be explicit  
+- structure must be sufficient to reproduce equivalent outcomes  
 
-The semantic model does not require a total order unless such an order
-is explicitly declared.
+A total ordering is **not required**.
 
-Independent steps remain unordered unless meaning requires otherwise.
+Only dependencies matter.
 
 ---
 
 ### 2.4 Ordering and Determinism
 
-Determinism is enforced at the level of declared meaning, not scheduling.
+If steps are independent, execution order may vary **only if meaning remains identical**.
 
-If two execution steps are semantically independent, variation in their
-evaluation order is permitted, provided that:
-
-- the declared state and outputs remain equivalent, and
-- no undeclared influence alters the result.
-
-If ordering affects meaning, that ordering must be explicitly declared.
+If ordering affects meaning, it must be declared.
 
 ---
 
 ### 2.5 Ordering and Explanation
 
-Execution ordering must support explanation.
+Ordering must support explanation.
 
-Given any execution result, the system must be able to:
+The system must be able to:
 
-- identify which prior steps contributed to that result, and
-- explain their contribution through declared dependencies.
-
-Ordering exists so explanations can follow declared causality without
-relying on observed execution behavior.
+- identify which steps contributed to a result  
+- explain those contributions through dependencies  
 
 ---
 
 ### 2.6 Non‑Requirements
 
-The minimal execution ordering model does not require:
+The model does not require:
 
-- a total or linear execution order,
-- timestamps or temporal metrics,
-- concurrency or parallel execution semantics,
-- scheduling policies or strategies,
-- execution optimization rules.
-
-These concerns are intentionally deferred.
+- total ordering  
+- timestamps  
+- concurrency semantics  
+- scheduling strategies  
 
 ---
 
 ### 2.7 Relationship to Traces
 
-Execution ordering defines **what must be explainable**.
+Ordering defines what must be explainable.
 
-Execution traces will exist to record sufficient information to
-reconstruct ordering relationships for replay and explanation.
-
-Ordering defines meaning; traces support reasoning about it.
+Traces exist to **record enough information to reconstruct ordering**.
 
 ---
 
-### 2.8 Role of Ordering in Later Phases
+### 2.8 Role of Ordering
 
-This section defines what execution ordering **must mean**, not how it
-is implemented or enforced.
-
-Later phases may introduce concrete realization strategies only insofar
-as they preserve the semantic commitments defined here and in
-`semantic-target.md`.
+This section defines meaning, not implementation.
 
 ---
 
 ## 3. Minimal Execution Trace Representation
 
-This section defines the **minimum information required** to support
-replay, explanation, and counterfactual reasoning over execution meaning.
+This section defines the **minimum information required** for replay and explanation.
 
-Traces exist to support semantic reasoning. They are not debugging
-artifacts, performance logs, or diagnostic tools.
+A trace is a **semantic artifact**, not a log.
 
 ---
 
 ### 3.1 Purpose of a Trace
 
-An execution trace exists to make the semantic consequences of execution
-inspectable after the fact.
+A trace must allow:
 
-A trace must allow a reader or system to:
-
-- reconstruct the declared execution ordering,
-- observe state transitions,
-- and explain why resulting state took its final form.
-
-Traces do not define correctness; they support reasoning about it.
+- reconstruction of execution ordering  
+- observation of state transitions  
+- explanation of final state  
 
 ---
 
 ### 3.2 Required Trace Content
 
-A minimal execution trace must include:
+A minimal trace must include:
 
-- the set of execution steps that occurred,
-- the declared dependencies of each step,
-- the state transitions applied by each step, and
-- the declared rules that justified each transition.
-
-No additional information is required for semantic reasoning.
+- execution steps  
+- dependencies of each step  
+- state transitions of each step  
+- rules that justify each transition  
 
 ---
 
 ### 3.3 Trace and Replay
 
-Replay consists of re‑applying declared execution steps and state
-transitions in accordance with declared ordering and dependencies.
+Replay consists of re-applying declared steps and transitions.
 
-Replay correctness is evaluated by whether it reproduces equivalent
-declared state—not whether it reproduces timing, scheduling, or
-incidental behavior.
+Replay correctness is determined by reproducing **equivalent state**, not timing.
 
 ---
 
 ### 3.4 Trace and Explanation
 
-Given a trace and a final state, the system must be able to:
+The system must:
 
-- identify which execution steps contributed to each state component,
-- explain why those steps were applied, and
-- connect outcomes to declared inputs and rules.
-
-Explanation must rely on declared semantics, not inferred behavior.
+- identify which steps contributed to each state component  
+- explain why those steps occurred  
+- connect outcomes to inputs and rules  
 
 ---
 
 ### 3.5 Trace and Counterfactuals
 
-Traces must contain sufficient information to support counterfactual
-reasoning.
+Traces must support:
 
-For any deliberate alteration to a declared rule, input, or dependency,
-a trace must allow the system to:
-
-- determine which execution steps are affected, and
-- explain how and why resulting state diverges.
+- identifying affected steps  
+- explaining divergence under change  
 
 ---
 
 ### 3.6 Non‑Requirements
 
-Minimal execution traces do not require:
+Traces do not require:
 
-- timestamps or wall‑clock information,
-- memory addresses or runtime artifacts,
-- performance metrics,
-- debugging annotations,
-- implementation‑specific metadata.
-
-Such information may exist in tooling, but is not part of the semantic
-trace.
+- timestamps  
+- memory addresses  
+- performance data  
+- debug annotations  
 
 ---
 
-### 3.7 Role of Traces in Later Phases
+### 3.7 Role of Traces
 
-This section defines what trace information **must exist** to support
-semantic reasoning.
-
-Later phases may introduce concrete trace representations or storage
-formats only insofar as they preserve the semantic commitments defined
-here and in `semantic-target.md`.
+This section defines what must exist, not how it is stored.
 
 ---
 
 ## 4. Minimal Counterfactual Evaluation
 
-This section defines the **minimum semantic requirements** for evaluating
-counterfactuals in SouperSport.
-
-Counterfactual evaluation exists to explain why execution meaning
-changes under deliberate, controlled variation.
+This section defines the requirements for reasoning about change.
 
 ---
 
 ### 4.1 What Counterfactual Evaluation Represents
 
-A counterfactual evaluation is a **semantic comparison** between two
-executions that differ by a single, deliberate change.
+A counterfactual compares two executions differing by one deliberate change.
 
-The purpose of counterfactual evaluation is to:
+Its purpose is to:
 
-- isolate the semantic impact of that change, and
-- explain how and why the resulting meaning differs.
-
-Counterfactuals operate on declared semantics, not observed behavior.
+- isolate the effect of that change  
+- explain resulting differences  
 
 ---
 
-### 4.2 Permissible Counterfactual Changes
+### 4.2 Permissible Changes
 
-A counterfactual change may consist of:
+A valid change is exactly one of:
 
-- modifying a declared input,
-- modifying a declared rule, or
-- modifying a declared execution dependency.
-
-Exactly one class of change must be evaluated at a time.
-
-Undeclared or compound changes are not permitted.
+- declared input  
+- declared rule  
+- declared dependency  
 
 ---
 
-### 4.3 Counterfactual Evaluation Scope
+### 4.3 Evaluation Scope
 
-Counterfactual evaluation must determine:
+The system must determine:
 
-- which execution steps are affected by the declared change,
-- which state transitions differ as a result, and
-- which declared rules explain the divergence.
-
-Evaluation scope is constrained by declared dependencies; steps not
-semantically dependent on the change remain unaffected.
+- which steps are affected  
+- which transitions differ  
+- why divergence occurs  
 
 ---
 
-### 4.4 Counterfactual Explanation Requirements
+### 4.4 Explanation Requirements
 
-A valid counterfactual explanation must:
+A valid explanation must:
 
-- identify the minimal set of affected execution steps,
-- trace divergence through declared dependencies, and
-- explain how altered rules or inputs propagated into state differences.
-
-Explanation must rely exclusively on declared semantics and traceable
-causality.
+- identify affected steps  
+- trace divergence  
+- explain propagation through dependencies  
 
 ---
 
 ### 4.5 Non‑Requirements
 
-Minimal counterfactual evaluation does not require:
+Counterfactual evaluation does not require:
 
-- speculative execution,
-- probabilistic reasoning,
-- optimization or performance modeling,
-- runtime execution of alternate paths,
-- rollback or undo mechanisms.
-
-These concerns are intentionally deferred.
+- speculative execution  
+- probabilistic reasoning  
+- optimization modeling  
 
 ---
 
-### 4.6 Relationship to Other Model Components
+### 4.6 Relationship to Other Components
 
-Counterfactual evaluation relies on:
+Counterfactual evaluation depends on:
 
-- the state model defined in Section 1,
-- the execution ordering defined in Section 2, and
-- the trace representation defined in Section 3.
+- state  
+- ordering  
+- trace  
 
-No additional semantic structures are introduced by counterfactual
-evaluation.
+No new semantic structures are introduced.
 
 ---
 
@@ -438,8 +350,16 @@ evaluation.
 
 With this document complete:
 
-- Phase 11.2 specifies state, ordering, tracing, and counterfactual
-  meaning.
-- No implementation commitments have been introduced.
-- The semantic execution model is sufficient to reason about preserved
-  meaning and divergence.
+- The minimal execution model defines:
+  - state  
+  - ordering  
+  - trace  
+  - counterfactual requirements  
+
+- No implementation commitments are introduced
+
+- The model is sufficient to support:
+  - deterministic execution  
+  - explanation  
+  - replay  
+  - semantic reasoning
