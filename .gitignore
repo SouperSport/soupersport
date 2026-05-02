@@ -1,4 +1,17 @@
 ## -------------------------------------------------
+## Build artifacts (local only)
+## -------------------------------------------------
+
+*.exe
+*.o
+
+## -------------------------------------------------
+## Runtime artifacts (must never be committed)
+## -------------------------------------------------
+
+artifacts/
+
+## -------------------------------------------------
 ## Determinism & execution artifacts
 ## -------------------------------------------------
 
@@ -33,18 +46,16 @@ inputs/**
 ## Signing keys (Stage 9)
 ## -------------------------------------------------
 
-# Never commit private keys or key directories by default
-.keys/
+# Never commit private keys
+.keys/*
 
 # Allow committing ONLY the public key JSON (explicit)
 !.keys/determinism-signing.public.json
 
 ## -------------------------------------------------
 ## Draft / exploratory specification artifacts
-## (NOT normative – do not publish yet)
 ## -------------------------------------------------
 
-# Exploratory only – still excluded
 reference-execution-sketch.md
 
 ## -------------------------------------------------
@@ -53,6 +64,12 @@ reference-execution-sketch.md
 
 !docs/trace-schema.md
 !docs/provenance-payload.md
+
+## -------------------------------------------------
+## Log / tooling noise
+## -------------------------------------------------
+
+*.log
 
 ## -------------------------------------------------
 ## OS / editor noise
