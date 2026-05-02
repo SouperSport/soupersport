@@ -14,28 +14,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ✅ Install gfortran
+      # ✅ Install MSYS2 with correct Fortran compiler
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          install: mingw-w64-x86_64-gcc
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-gcc-fortran
 
-      # ✅ Build executor
+      # ✅ Build the executor
       - name: Build reference executor
         shell: msys2 {0}
         run: |
           gfortran types.f90 sha256.f90 hash_bindings.f90 canonical_json.f90 intake_min.f90 main.f90 -o souper_executor.exe
 
-      # ✅ Run executor
+      # ✅ Run the executor
       - name: Run reference semantic executor
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
           Write-Host "Running reference semantic executor..."
-          .\souper_executor.exe inputs\request.json
+          .\souper_executor.exe
           Write-Host "Executor finished."
 
-      # ✅ Verify artifacts
+      # ✅ Verify semantic artifacts exist
       - name: Verify semantic artifacts
         shell: pwsh
         run: |
@@ -51,7 +53,7 @@ jobs:
 
           Write-Host "Semantic artifacts present."
 
-      # ✅ Verify provenance exists
+      # ✅ Verify provenance specifically
       - name: Verify provenance payload
         shell: pwsh
         run: |
@@ -60,4 +62,5 @@ jobs:
           if (Test-Path artifacts\provenance.json) {
             Write-Host "Provenance payload found."
           } else {
-            Write-Error "Missing provenance payload
+            Write-Error "Missing provenance payload."
+          }
