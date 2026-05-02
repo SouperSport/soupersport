@@ -1,1 +1,14 @@
-﻿{"source_context":{"content_id":"BOOTSTRAP"},"declared_inputs":{},"declared_initial_state":{}}
+{
+  "source_context": {
+    "content_id": "BOOTSTRAP",
+    "repository_id": ""
+  },
+  "declared_inputs": {
+    "ready_flag": true,
+    "rule_definition": {
+      "name": "ready_flag_rule",
+      "expression": "ready_flag == true"
+    }
+  },
+  "declared_initial_state": {}
+}
