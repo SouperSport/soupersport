@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   determinism:
     runs-on: windows-latest
@@ -14,53 +17,60 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ✅ Install MSYS2 with correct Fortran compiler
-      - name: Setup MSYS2
+      # Install MSYS2 with the MinGW64 Fortran toolchain
+      - name: Setup MSYS2 (MINGW64 + gfortran)
         uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
           update: true
           install: mingw-w64-x86_64-gcc-fortran
 
-      # ✅ Build the executor
+      # Build in MSYS2 so the toolchain matches runtime libs
       - name: Build reference executor
         shell: msys2 {0}
         run: |
+          set -e
+          gfortran --version
           gfortran types.f90 sha256.f90 hash_bindings.f90 canonical_json.f90 intake_min.f90 main.f90 -o souper_executor.exe
+          ls -la souper_executor.exe
 
-      # ✅ Run the executor
+      # Run in MSYS2 as well (ensures DLLs/PATH are correct)
       - name: Run reference semantic executor
-        shell: pwsh
+        shell: msys2 {0}
         run: |
-          $ErrorActionPreference = "Stop"
-          Write-Host "Running reference semantic executor..."
-          .\souper_executor.exe
-          Write-Host "Executor finished."
+          set -e
+          echo "Running reference semantic executor..."
+          ./souper_executor.exe
+          echo "Executor finished."
 
-      # ✅ Verify semantic artifacts exist
+      # Verify artifacts from PowerShell (Windows paths)
       - name: Verify semantic artifacts
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
 
-          if (
-            !(Test-Path artifacts\trace.json) -and
-            !(Test-Path artifacts\refusal.json) -and
-            !(Test-Path artifacts\provenance.json)
-          ) {
-            Write-Error "Executor emitted no valid semantic artifacts."
+          if (!(Test-Path "artifacts")) {
+            Write-Error "Missing artifacts directory."
           }
 
-          Write-Host "Semantic artifacts present."
+          # Accept either success artifacts (trace+provenance) or refusal (provenance only),
+          # but provenance must exist for any attempt.
+          if (!(Test-Path "artifacts\provenance.json")) {
+            Write-Error "Missing provenance payload (artifacts\provenance.json)."
+          }
 
-      # ✅ Verify provenance specifically
-      - name: Verify provenance payload
+          if ((Test-Path "artifacts\trace.json")) {
+            Write-Host "Trace present."
+          } else {
+            Write-Host "Trace not present (this is acceptable only if executor refused)."
+          }
+
+          Write-Host "Artifacts check complete."
+          Get-ChildItem artifacts | Format-Table Name, Length
+
+      - name: Show provenance payload (debug)
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-
-          if (Test-Path artifacts\provenance.json) {
-            Write-Host "Provenance payload found."
-          } else {
-            Write-Error "Missing provenance payload."
-          }
+          Write-Host "=== artifacts/provenance.json ==="
+          Get-Content artifacts\provenance.json
