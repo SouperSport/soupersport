@@ -1,195 +1,104 @@
-# Representation Candidates — Phase 11.3
+# Representation Candidates
 
-This document enumerates and evaluates **candidate representation families**
-that could satisfy the semantic commitments defined in:
+This document evaluates representation families that may satisfy the
+semantic model.
 
-- `semantic-target.md`
-- `minimal-execution-model.md`
-
-The purpose of this document is to **identify viable classes of representation**
-and their semantic trade‑offs, not to select or implement any approach.
-
-No new semantics are introduced here.
+It does not introduce semantics or select an approach.
 
 ---
 
-## 1. Framing and Constraints
+## 1. Constraints
 
-The semantic model defined in earlier phases is **fixed**.
+Representations must:
 
-Any representation considered in this document must:
+- preserve explicit state  
+- express dependency ordering  
+- support replayable traces  
+- support counterfactual reasoning  
 
-- preserve declared state without hidden mutation,
-- express execution ordering through explicit dependencies,
-- support execution traces sufficient for replay and explanation, and
-- support counterfactual reasoning over declared changes.
-
-Representations are evaluated **solely** on their ability to uphold
-these semantic requirements.
-
-Performance, ergonomics, tooling, syntax, and implementation effort
-are intentionally out of scope.
+Evaluation is purely semantic.
 
 ---
 
-## 2. Candidate Representation Families
-
-### 2.1 Explicit Graph‑Based Representation
-
-In this family, execution is represented as an explicit graph.
-
-Typical characteristics:
-
-- nodes represent declared execution steps,
-- edges represent declared dependencies,
-- state transitions are represented as labeled transformations,
-- execution ordering is derived from graph structure.
-
-This family emphasizes **explicit causality**.
+## 2. Candidates
 
 ---
 
-### 2.2 Step‑Indexed Transition Log
+### Graph-Based
 
-In this family, execution is represented as a sequence (or partial order)
-of state transitions indexed by step identifiers.
+- nodes = steps  
+- edges = dependencies  
+- ordering from graph  
 
-Typical characteristics:
-
-- state snapshots and transitions are explicitly recorded,
-- step identifiers encode ordering and dependency constraints,
-- provenance information is attached per transition.
-
-This family emphasizes **trace clarity and replay**.
+Focus: causality
 
 ---
 
-### 2.3 Constraint‑Driven Functional Core
+### Transition Log
 
-In this family, execution is expressed as the application of constraints
-or rules over immutable state.
+- indexed steps  
+- explicit ordering  
 
-Typical characteristics:
-
-- state is treated as immutable structures,
-- execution applies declared rules to derive new state,
-- counterfactuals are evaluated by re‑derivation under modified constraints.
-
-This family emphasizes **declarative meaning and equivalence**.
+Focus: replay clarity
 
 ---
 
-### 2.4 Relational / Declarative Representation
+### Functional Core
 
-In this family, state and execution are represented relationally.
+- immutable state  
+- rule-based derivation  
 
-Typical characteristics:
-
-- state is modeled as a set of relations,
-- execution steps derive new relations from existing ones,
-- traces correspond to justification or derivation graphs.
-
-This family emphasizes **explainability through logical derivation**.
+Focus: declarative meaning
 
 ---
 
-## 3. Semantic Fit Analysis
+### Relational
 
-### 3.1 Explicit Graph‑Based Representation
+- relations as state  
+- derivation logic  
 
-Semantic fit:
-
-- ✅ Can represent declared state explicitly.
-- ✅ Naturally expresses partial ordering via edges.
-- ✅ Supports trace reconstruction using graph traversal.
-- ✅ Can support counterfactual reasoning by graph modification.
-
-Semantic risks:
-
-- Accidental introduction of implicit ordering if traversal semantics
-  are underspecified.
-- Risk of conflating graph structure with execution scheduling.
+Focus: explanation
 
 ---
 
-### 3.2 Step‑Indexed Transition Log
+## 3. Fit and Risks
 
-Semantic fit:
+Each model:
 
-- ✅ Directly represents declared state transitions.
-- ✅ Explicitly records execution ordering.
-- ✅ Strong support for replay and explanation.
-- ✅ Counterfactual reasoning supported by step comparison.
+- supports semantics  
+- introduces specific risks  
 
-Semantic risks:
+Risks include:
 
-- Risk of encoding total order where partial order is sufficient.
-- Risk of drifting toward timeline semantics if ordering is over‑emphasized.
-
----
-
-### 3.3 Constraint‑Driven Functional Core
-
-Semantic fit:
-
-- ✅ Strong alignment with state equivalence and immutability.
-- ✅ Execution ordering derived from dependency declarations.
-- ✅ Counterfactuals expressed as rule variation.
-
-Semantic risks:
-
-- Potential ambiguity in how execution steps are enumerated.
-- Risk of under‑specifying traces if derivation steps are implicit.
+- implicit ordering  
+- hidden mutation  
+- inadequate trace detail  
+- conflating execution with scheduling  
 
 ---
 
-### 3.4 Relational / Declarative Representation
+## 4. Risk Register
 
-Semantic fit:
+Must avoid:
 
-- ✅ Naturally expresses dependency and provenance.
-- ✅ Traces emerge as justification graphs.
-- ✅ Counterfactual analysis supported via derivation changes.
-
-Semantic risks:
-
-- Risk of hiding execution steps inside logical inference.
-- Risk of over‑abstracting state transition boundaries.
+- implicit behavior  
+- hidden state  
+- insufficient trace detail  
 
 ---
 
-## 4. Semantic Risk Register
+## 5. Non‑Decision
 
-Across all candidate families, recurring semantic risks include:
+No representation is selected.
 
-- implicit execution ordering emerging from tooling assumptions,
-- hidden mutation introduced through convenience abstractions,
-- insufficient trace materialization for explanation,
-- accidental coupling of representation with scheduling or performance.
-
-Any selected representation must explicitly counter these risks.
-
----
-
-## 5. Explicit Non‑Decision Statement
-
-This document **does not select** a representation.
-
-No candidate is preferred or endorsed at this time.
-
-The purpose of this phase is to constrain future choices, not to make them.
-
-Representation selection, if any, occurs in **Phase 11.4**.
+This document constrains future decisions.
 
 ---
 
 ## Status
 
-With this document complete:
+- candidates defined  
+- risks identified  
+- no commitment made  
 
-- Viable representation families have been enumerated.
-- At least one semantic risk has been identified for each family.
-- No implementation or design commitment has been made.
-
-The project may now proceed to Phase 11.4 when and only when a
-reference execution approach is ready to be chosen deliberately.
+Further selection must be explicit.

@@ -1,20 +1,4 @@
-\# Reference Execution Sketch — Phase 11.5
-
-
-
-This document provides a \*\*conceptual sketch\*\* of how the selected
-
-reference execution model (Phase 11.4) could be realized, while
-
-preserving all semantic commitments defined in earlier phases.
-
-
-
-This document does not prescribe implementation details, languages,
-
-or tooling. It exists to demonstrate that a reference execution is
-
-coherent, realizable, and faithful to the semantic model.
+\# Reference Execution Sketch
 
 
 
@@ -22,27 +6,21 @@ coherent, realizable, and faithful to the semantic model.
 
 
 
-\## 1. Purpose of a Reference Execution Sketch
+\## Purpose
 
 
 
-The purpose of this sketch is to bridge the gap between:
+This document demonstrates that the reference execution model is realizable.
 
 
 
-\- semantic definition (Phases 11.1–11.4), and
-
-\- concrete realization (future implementation phases).
+It introduces no new semantics.
 
 
 
-This sketch demonstrates that the selected reference execution model
+It shows that the structures required by the semantic model can be
 
-can be expressed concretely \*\*without introducing new meaning\*\*.
-
-
-
-Correctness remains the sole design driver.
+expressed concretely without ambiguity.
 
 
 
@@ -50,29 +28,25 @@ Correctness remains the sole design driver.
 
 
 
-\## 2. High‑Level Shape of the Reference Execution
+\## 1. Structure
 
 
 
-The reference execution is structured around an explicit execution graph.
+Execution is represented as:
 
 
 
-Conceptually, it consists of:
+\- a set of execution steps  
+
+\- explicit dependency relationships  
+
+\- declared state  
+
+\- state transitions  
 
 
 
-\- a set of declared execution steps,
-
-\- explicit dependency relationships between those steps,
-
-\- declared state inputs and outputs, and
-
-\- labeled state transitions.
-
-
-
-No implicit control flow or evaluation order exists outside this graph.
+No implicit structure exists outside these declarations.
 
 
 
@@ -80,27 +54,25 @@ No implicit control flow or evaluation order exists outside this graph.
 
 
 
-\## 3. Execution Step Representation (Conceptual)
+\## 2. Execution Steps
 
 
 
-Each execution step conceptually includes:
+Each execution step includes:
 
 
 
-\- a unique identity,
+\- a unique identity  
 
-\- declared input dependencies (state or prior step outputs),
+\- declared input dependencies  
 
-\- a declared transformation rule, and
+\- a governing rule  
 
-\- declared state effects.
+\- defined effects on state  
 
 
 
-Execution steps are inert definitions until evaluated by the reference
-
-execution process.
+Execution steps are inert until evaluated.
 
 
 
@@ -108,7 +80,7 @@ execution process.
 
 
 
-\## 4. Dependency Resolution and Ordering
+\## 3. Dependency Resolution and Ordering
 
 
 
@@ -116,51 +88,19 @@ Execution ordering is derived exclusively from declared dependencies.
 
 
 
-Conceptually:
+This implies:
 
 
 
-\- dependency edges define a partial order,
+\- a partial order of execution steps  
 
-\- steps without dependency relationships are semantically independent,
+\- independence where no dependency exists  
 
-\- no implicit sequencing is introduced.
-
-
-
-Any evaluation order that respects declared dependencies is considered
-
-semantically valid.
+\- no implicit sequencing  
 
 
 
-\---
-
-
-
-\## 5. State Application Model
-
-
-
-State is applied through explicit transitions.
-
-
-
-Conceptually:
-
-
-
-\- initial state is provided prior to any step evaluation,
-
-\- execution steps consume prior state and produce new state,
-
-\- produced state becomes available only after the responsible step is
-
-&#x20; satisfied.
-
-
-
-State transitions are attributable to specific execution steps.
+Any evaluation order that respects dependencies is valid.
 
 
 
@@ -168,35 +108,27 @@ State transitions are attributable to specific execution steps.
 
 
 
-\## 6. Trace Construction
+\## 4. State Application Model
 
 
 
-The reference execution constructs a trace as execution proceeds.
+State evolves through explicit transitions.
 
 
 
-Conceptually, the trace records:
+Each transition:
 
 
 
-\- each execution step that was evaluated,
+\- consumes prior state or declared inputs  
 
-\- the dependencies that justified its evaluation,
+\- produces new state  
 
-\- the state transitions it produced.
-
-
-
-The trace is complete enough to support:
+\- is attributable to a specific execution step  
 
 
 
-\- replay of execution meaning,
-
-\- explanation of why state changed, and
-
-\- identification of causality chains.
+State changes are never implicit.
 
 
 
@@ -204,53 +136,35 @@ The trace is complete enough to support:
 
 
 
-\## 7. Counterfactual Evaluation Sketch
+\## 5. Trace Construction
 
 
 
-Counterfactual evaluation is sketched as follows:
+Execution produces a trace during evaluation.
 
 
 
-\- a declared change is introduced (rule, input, or dependency),
-
-\- the execution graph is adjusted accordingly,
-
-\- affected execution steps are identified through dependency analysis,
-
-\- resulting state divergence is explained via changed causal paths.
+The trace records:
 
 
 
-No speculative execution is required.
+\- each execution step that occurs  
+
+\- the dependencies that justified its evaluation  
+
+\- the state transitions applied  
 
 
 
-\---
+The trace must be sufficient to:
 
 
 
-\## 8. Non‑Commitments
+\- replay execution  
 
+\- reconstruct causal ordering  
 
-
-This sketch does not commit to:
-
-
-
-\- in‑memory or persistent representation,
-
-\- graph storage format,
-
-\- traversal algorithms,
-
-\- language‑level constructs,
-
-\- runtime optimizations.
-
-
-
-These choices are deferred to future implementation phases.
+\- explain why state changed  
 
 
 
@@ -258,23 +172,31 @@ These choices are deferred to future implementation phases.
 
 
 
-\## 9. Readiness for Implementation
+\## 6. Trace Properties
 
 
 
-With this sketch complete:
+The trace:
 
 
 
-\- the semantic model is realizable,
+\- reflects semantic causality  
 
-\- the reference execution choice is coherent,
+\- captures state evolution  
 
-\- no semantic gaps remain between design and execution.
+\- preserves dependency relationships  
 
 
 
-Further work may proceed to implementation planning when appropriate.
+The trace does NOT include:
+
+
+
+\- scheduling decisions  
+
+\- performance characteristics  
+
+\- implementation artifacts  
 
 
 
@@ -282,27 +204,151 @@ Further work may proceed to implementation planning when appropriate.
 
 
 
-\## Status
+\## 7. Counterfactual Evaluation
 
 
 
-The project has now completed:
+Counterfactual evaluation is supported by:
 
 
 
-\- semantic definition (Phase 11.1),
+\- modifying a declared input, rule, or dependency  
 
-\- minimal execution modeling (Phase 11.2),
+\- recomputing affected execution steps  
 
-\- representation analysis (Phase 11.3),
-
-\- reference execution selection (Phase 11.4),
-
-\- and reference execution sketching (Phase 11.5).
+\- observing resulting divergence  
 
 
 
-All subsequent phases are \*\*explicitly implementational\*\* and must
+The system must determine:
 
-preserve the semantic commitments defined in Phases 11.1 through 11.5.
+
+
+\- which steps are affected  
+
+\- how state diverges  
+
+\- which dependencies caused the change  
+
+
+
+No speculative or heuristic behavior is permitted.
+
+
+
+\---
+
+
+
+\## 8. Execution Validity
+
+
+
+A valid execution must satisfy:
+
+
+
+\- all dependencies are explicitly declared  
+
+\- all state transitions are attributable  
+
+\- execution ordering follows dependencies  
+
+\- no hidden or undeclared influence exists  
+
+
+
+If any of these conditions fail, execution is invalid.
+
+
+
+\---
+
+
+
+\## 9. Non‑Commitments
+
+
+
+This sketch does not define:
+
+
+
+\- storage formats  
+
+\- runtime architecture  
+
+\- traversal algorithms  
+
+\- execution optimizations  
+
+\- user-facing constructs  
+
+
+
+These concerns are intentionally excluded.
+
+
+
+\---
+
+
+
+\## 10. Consistency with the Semantic Model
+
+
+
+This sketch confirms that:
+
+
+
+\- execution can be represented explicitly  
+
+\- ordering can be derived from dependencies  
+
+\- traces can be constructed without hidden behavior  
+
+\- counterfactual reasoning is directly supported  
+
+
+
+No additional semantics are required.
+
+
+
+\---
+
+
+
+\## 11. Conclusion
+
+
+
+The reference execution model is:
+
+
+
+\- coherent  
+
+\- realizable  
+
+\- sufficiently defined  
+
+
+
+It supports:
+
+
+
+\- deterministic execution  
+
+\- replay and rewind  
+
+\- causal explanation  
+
+
+
+This demonstrates that the semantic model can be implemented
+
+without ambiguity or contradiction
 

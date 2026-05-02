@@ -1,69 +1,99 @@
 # Tutorial — Your First Deterministic Region
 
-This tutorial demonstrates three SouperSport commitments:
+---
 
-1) **Sealed input**: nondeterministic values become declared inputs at a boundary.  
-2) **Deterministic evaluation**: same input and state produce the same output and trace.  
-3) **Explicit outcomes**: errors and early exits are explicit control flow.
+## What You Will Learn
 
-**Note:** The code below is illustrative pseudocode to teach the model.
-It is not final syntax.
+This tutorial introduces the core execution model of SouperSport.
+
+You will see how:
+
+- nondeterministic input is isolated  
+- deterministic execution is enforced  
+- outcomes are explicit and traceable  
+
+This example focuses on behavior, not syntax.
 
 ---
 
-## Step 1 — Obtain Data Outside Deterministic (Nondeterministic Region)
+## Step 1 — Obtain Data Outside Deterministic
 
-Example sources include:
-- user input,
-- network responses,
-- current time,
-- randomness.
+Deterministic execution cannot observe external systems directly.
 
-The key requirement is:
+Collect nondeterministic data outside execution, such as:
 
-**Do this outside deterministic execution**, and then **seal** the result.
+- user input  
+- network responses  
+- time  
+- randomness  
 
 ---
 
 ## Step 2 — Seal the Input
 
-Sealing means:
+Sealing converts data into a canonical, reproducible form.
 
-- canonical representation (locale‑independent),
-- normalized text or structured data,
-- stable byte‑level form.
+This includes:
+
+- standardized encoding  
+- normalized structure  
+- stable representation  
+
+After sealing, the value becomes a declared input.
 
 ---
 
 ## Step 3 — Evaluate Deterministically
 
-Inside Deterministic, computation is a pure function of:
+Execution is a pure function of:
 
-- declared sealed inputs,
-- declared initial state.
+- sealed inputs  
+- initial state  
 
-Example (pseudocode model):
+Example:
 
-- Input: a sealed string `amount`
-- Output: either a parsed numeric value or an explicit error outcome
+- Input: a string amount  
+- Output:
+  - parsed number  
+  - or explicit error  
 
----
-
-## Step 4 — Explicit Outcomes (Semantic Law #2)
-
-Errors are control flow, not hidden exceptions.
-They must be explicit and traceable.
-
-The deterministic region produces:
-
-- an output value, or
-- an explicit error outcome,
-- plus a trace that can be replayed.
+No external influence is permitted.
 
 ---
 
-## What You Should Be Able to Do
+## Step 4 — Explicit Outcomes
 
-- Rerun with the same sealed input and same initial state ⇒ identical output and trace.
-- Change input ⇒ deterministic change in output and trace.
-- Compare traces in tooling or CI to catch regressions.
+Errors are control‑flow events.
+
+Execution produces:
+
+- a value OR  
+- an explicit error  
+
+Each execution also produces a trace.
+
+---
+
+## What You Can Do Now
+
+You should be able to:
+
+- rerun → identical output and trace  
+- change input → predictable change  
+- compare traces → detect divergence  
+
+---
+
+## Key Takeaway
+
+Determinism is enforced by:
+
+- isolating nondeterminism  
+- sealing inputs  
+- eliminating hidden influence  
+
+Execution becomes:
+
+- replayable  
+- explainable  
+- reliable

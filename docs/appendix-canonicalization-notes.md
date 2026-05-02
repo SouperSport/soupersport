@@ -1,82 +1,78 @@
-## Appendix — Canonicalization Notes
-
-This appendix provides guidance on canonicalizing values that cross
-nondeterministic boundaries into Deterministic regions.
-
-It does not introduce new semantic requirements.
-It clarifies how existing determinism guarantees can be upheld in practice.
+# Appendix — Canonicalization Notes
 
 ---
 
 ## Purpose
 
-Sealed inputs must be represented canonically to preserve replayability,
-rewindability, and counterfactual reasoning.
+This appendix provides guidance on canonicalizing values that cross
+nondeterministic boundaries into Deterministic regions.
 
-Canonicalization ensures that semantically equal inputs are operationally
-indistinguishable to deterministic execution.
+It does not introduce new semantic requirements.
+
+---
+
+## Core Principle
+
+Sealed inputs must be represented canonically to preserve:
+
+- replayability  
+- rewindability  
+- counterfactual reasoning  
+
+Canonicalization ensures semantically equal inputs are indistinguishable
+to deterministic execution.
 
 ---
 
 ## General Principles
 
-- Canonicalization occurs **before** deterministic consumption.
-- Canonicalization must be **independent of locale, platform, and environment**.
-- Canonicalization must not consult the external world during deterministic
-  execution.
+- Occurs before deterministic consumption  
+- Independent of locale, platform, and environment  
+- Must not consult the external world  
 
-If canonicalization cannot be performed without nondeterministic observation,
-it must occur outside Deterministic.
+If canonicalization requires external observation, it must occur outside
+Deterministic.
 
 ---
 
 ## Strings and Text
 
-Recommended properties:
+- Explicit encoding (e.g., UTF‑8)  
+- Explicit normalization (e.g., NFC)  
+- No locale‑dependent transformations  
+- Preserve codepoint order  
 
-- Explicit character encoding (e.g., UTF‑8 as a named choice).
-- Explicit normalization form (e.g., Unicode NFC or NFKC).
-- No locale‑dependent folding, collation, or casing unless explicitly modeled.
-- Preservation of codepoint order.
-
-Semantically equal strings must produce identical canonical byte sequences.
+Equivalent strings must produce identical byte sequences.
 
 ---
 
-## Structured Data (e.g., JSON‑like)
+## Structured Data
 
-Recommended properties:
-
-- Stable ordering of object keys.
-- Explicit numeric representations.
-- No reliance on source formatting, whitespace, or serialization order.
-- Explicit treatment of null, absent, or optional fields.
-
-Canonicalization must eliminate ambiguity introduced by serialization variability.
+- Stable key ordering  
+- Explicit numeric representation  
+- No reliance on formatting  
+- Explicit handling of null/absent fields  
 
 ---
 
-## Byte Sequences and Binary Data
+## Binary Data
 
-- Binary inputs should be treated as exact byte sequences.
-- Any interpretation layered on top must be deterministic and explicit.
+- Treated as exact byte sequences  
+- Interpretation must be explicit and deterministic  
 
 ---
 
 ## Floating‑Point Values
 
-- Canonicalization should not rely on platform formatting.
-- Numeric values must already obey the deterministic numeric rules
-  applicable to their region.
+- No platform‑dependent formatting  
+- Must already satisfy deterministic numeric rules  
 
-Canonicalization does not repair numeric nondeterminism;
-it preserves already‑deterministic values.
+Canonicalization does not repair nondeterminism.
 
 ---
 
 ## Scope and Non‑Goals
 
-This appendix does not mandate specific formats, libraries, or encodings.
+This appendix does not mandate formats, libraries, or encodings.
 
-It exists to make deterministic guarantees practically achievable
-without constraining implementation strategy.
+It exists to make deterministic guarantees

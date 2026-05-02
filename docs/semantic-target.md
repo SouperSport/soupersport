@@ -2,23 +2,23 @@
 
 
 
-This document defines the \*\*semantic execution target\*\* for SouperSport.
+\---
 
 
 
-Its purpose is to specify—without reference to syntax, tooling, or
-
-implementation—the smallest executable meaning that can correctly be
-
-called a SouperSport execution under this semantic model.
+\## Purpose
 
 
 
-This document is normative. Any future implementation, interpreter,
+This document defines the semantic execution target for SouperSport.
 
-compiler, or toolchain must satisfy the semantic commitments defined
 
-here to be considered conformant.
+
+It specifies the minimal conditions under which execution is considered valid.
+
+
+
+This document is normative.
 
 
 
@@ -30,37 +30,27 @@ here to be considered conformant.
 
 
 
-A SouperSport execution is considered \*\*meaning‑preserving\*\* if:
+Execution is meaning‑preserving if it:
 
 
 
-\- Given the same declared inputs and execution rules,
+\- produces explicit state transitions  
 
-\- it produces state transitions whose effects are explicit,
+\- is repeatable under deterministic rules  
 
-\- repeatable under deterministic rules,
-
-\- and explainable in terms of declared dependencies rather than observed
-
-&#x20; behavior alone.
+\- is explainable through declared dependencies  
 
 
 
-If two executions differ, the system must be able to explain:
+If executions differ, the system must explain:
 
 
 
-\- \*\*what\*\* differs,
+\- what differs  
 
-\- \*\*why\*\* it differs,
+\- why it differs  
 
-\- and \*\*which rule or dependency caused the divergence\*\*.
-
-
-
-The system does not merely detect that behavior changed; it must
-
-identify the \*semantic cause\* of that change.
+\- which rule caused it  
 
 
 
@@ -72,33 +62,7 @@ identify the \*semantic cause\* of that change.
 
 
 
-SouperSport defines a strict boundary between what belongs inside
-
-the semantic execution model and what is explicitly refused.
-
-
-
-\### 2.1 Allowed Within the Model
-
-
-
-The following are allowed and considered semantically valid:
-
-
-
-\- Deterministic computation with explicitly declared inputs
-
-\- Explicitly declared state and state transitions
-
-\- Declared execution order and dependency structure
-
-\- Derived values whose provenance can be traced through declarations
-
-
-
-These constraints exist to preserve reasoning and auditability
-
-across executions.
+Defines what is allowed and refused.
 
 
 
@@ -106,33 +70,41 @@ across executions.
 
 
 
-\### 2.2 Explicitly Refused
+\### 2.1 Allowed
 
 
 
-The following are refused by the semantic model:
+\- deterministic computation  
+
+\- explicit state  
+
+\- explicit execution order  
+
+\- traceable dependency  
 
 
 
-\- Ambient time or wall‑clock access
-
-\- Hidden or implicit randomness
-
-\- Implicit I/O or undeclared external state
-
-\- Undeclared global mutation
-
-\- Behavior that depends on environmental coincidence
+\---
 
 
 
-These are refused because they introduce effects that cannot be
-
-explained, replayed, or meaningfully compared across executions.
+\### 2.2 Refused
 
 
 
-Refusal is a semantic commitment, not a tooling limitation.
+\- ambient time  
+
+\- hidden randomness  
+
+\- undeclared I/O  
+
+\- global mutation  
+
+\- environment‑dependent behavior  
+
+
+
+These are refused because they break replay and explanation.
 
 
 
@@ -144,29 +116,27 @@ Refusal is a semantic commitment, not a tooling limitation.
 
 
 
-\### 3.1 Definition of State
+\---
 
 
 
-State is defined as the set of values explicitly declared as persistent
-
-across execution steps.
+\### 3.1 State Definition
 
 
 
-State does not include:
+State is explicitly declared persistent values.
 
 
 
-\- transient intermediate values,
-
-\- implicit caches,
-
-\- runtime‑only artifacts not declared as state.
+Not included:
 
 
 
-Only declared state participates in semantic reasoning.
+\- intermediate values  
+
+\- caches  
+
+\- runtime artifacts  
 
 
 
@@ -174,21 +144,15 @@ Only declared state participates in semantic reasoning.
 
 
 
-\### 3.2 State Introduction and Transformation
+\### 3.2 State Transformation
 
 
 
-\- State must be introduced explicitly.
+\- must be explicit  
 
-\- State transitions must be locally attributable to declared operations.
+\- must be attributable  
 
-\- No state may change “by accident” or without a declared cause.
-
-
-
-A valid state transition is one whose cause can be identified
-
-without inspecting runtime traces.
+\- must not occur accidentally  
 
 
 
@@ -200,19 +164,13 @@ without inspecting runtime traces.
 
 
 
-Two states are considered equivalent if:
+States are equivalent if:
 
 
 
-\- All declared state components are identical under the system’s
+\- components match  
 
-&#x20; equivalence rules, and
-
-\- no refused or undeclared influence contributed to their values.
-
-
-
-State equivalence is defined independently of execution history.
+\- no undeclared influence exists  
 
 
 
@@ -220,7 +178,11 @@ State equivalence is defined independently of execution history.
 
 
 
-\## 4. Execution Steps and Traces
+\## 4. Execution Steps
+
+
+
+\---
 
 
 
@@ -228,25 +190,17 @@ State equivalence is defined independently of execution history.
 
 
 
-An execution step represents a single, declared transformation of:
+A step transforms:
 
 
 
-\- inputs to outputs, or
+\- inputs → outputs  
 
-\- prior state to new state.
-
-
-
-Each step must:
+\- state → new state  
 
 
 
-\- have declared dependencies,
-
-\- produce declared effects,
-
-\- and be attributable to a specific rule or declaration.
+Must be attributable and declared.
 
 
 
@@ -254,27 +208,23 @@ Each step must:
 
 
 
-\### 4.2 Execution Composition
+\### 4.2 Composition
 
 
 
-Execution is the ordered composition of execution steps.
+Execution is ordered composition.
 
 
 
-Execution order must be:
+Order must be:
 
 
 
-\- explicit,
+\- explicit  
 
-\- inspectable,
+\- inspectable  
 
-\- and reproducible under deterministic constraints.
-
-
-
-No step may depend on undeclared predecessor effects.
+\- reproducible  
 
 
 
@@ -282,35 +232,19 @@ No step may depend on undeclared predecessor effects.
 
 
 
-\### 4.3 Execution Trace
+\### 4.3 Trace
 
 
 
-A trace is the minimal information required to:
+Trace must allow:
 
 
 
-\- replay the execution,
+\- replay  
 
-\- inspect state evolution,
+\- inspection  
 
-\- and explain semantic differences.
-
-
-
-A trace must contain:
-
-
-
-\- execution steps taken,
-
-\- state transitions applied,
-
-\- and the declared rules that justified each step.
-
-
-
-Traces exist to support reasoning, not debugging convenience.
+\- explanation  
 
 
 
@@ -318,65 +252,15 @@ Traces exist to support reasoning, not debugging convenience.
 
 
 
-\## 5. Equivalence and Counterfactual Reasoning
+\## 5. Equivalence and Counterfactuals
 
 
 
-\### 5.1 Execution Equivalence
+Execution equivalence = same meaning, not same path.
 
 
 
-Two executions are meaning‑preserving equivalents if:
-
-
-
-\- They produce equivalent declared state,
-
-\- under identical declared rules,
-
-\- from equivalent initial state and inputs.
-
-
-
-Equivalence does not require identical execution paths,
-
-only identical declared meaning.
-
-
-
-\---
-
-
-
-\### 5.2 Counterfactual Changes
-
-
-
-A counterfactual is defined as a deliberate alteration of:
-
-
-
-\- a rule,
-
-\- an input,
-
-\- or an execution dependency.
-
-
-
-The system must be able to explain, for a counterfactual:
-
-
-
-\- why the result differs,
-
-\- which rule caused the difference,
-
-\- and which downstream state transitions were affected.
-
-
-
-Counterfactuals require explanation, not speculation.
+Counterfactuals must explain differences causally.
 
 
 
@@ -388,25 +272,17 @@ Counterfactuals require explanation, not speculation.
 
 
 
-This document does \*\*not\*\* address:
+Excluded:
 
 
 
-\- Syntax or surface language design
+\- syntax  
 
-\- Performance characteristics
+\- performance  
 
-\- Parallel or distributed execution
+\- tooling  
 
-\- Tooling user interfaces
-
-\- CI, enforcement, or automation
-
-\- Ecosystem or adoption concerns
-
-
-
-These concerns are intentionally excluded from the semantic target.
+\- ecosystem  
 
 
 
@@ -414,23 +290,25 @@ These concerns are intentionally excluded from the semantic target.
 
 
 
-\## 7. Stability Criteria
+\## 7. Stability
 
 
 
-This semantic target is considered stable when:
+This document is stable when:
 
 
 
-\- The obligations defined here remain unchanged,
+\- obligations remain fixed  
 
-\- Future design and implementation decisions can be traced back to it,
+\- meaning is unambiguous  
 
-\- No ambiguity exists about what constitutes executable meaning,
-
-\- And no execution may claim conformance without satisfying these rules.
+\- conformance is enforceable  
 
 
 
-This document defines \*\*what it means for SouperSport to execute\*\*.
+\---
+
+
+
+This defines what it means to execute in SouperSport.
 

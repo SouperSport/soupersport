@@ -2,21 +2,23 @@
 
 
 
-This document captures the constraints that guide SouperSport’s design.
+\---
+
+
+
+\## Purpose
+
+
+
+These are constraints that guide design.
 
 
 
 They are not features.
 
-They exist to limit the design space so reasoning remains tractable as the
-
-language evolves.
 
 
-
-If a future idea violates one of these foundations, the violation should be
-
-explicit and justified.
+They exist to preserve reasoning as the system evolves.
 
 
 
@@ -28,23 +30,27 @@ explicit and justified.
 
 
 
-Execution order must be representable and reasoned about without relying on
-
-convention, folklore, or implicit rules, so that identical inputs and state
-
-can be expected to yield explainable behavior.
+Execution must be:
 
 
 
-If something happens, it should be possible to explain:
+\- visible  
+
+\- explainable  
+
+\- dependency‑driven  
 
 
 
-\- when it happens,
+It must always be possible to explain:
 
-\- why it happens,
 
-\- what it depends on.
+
+\- when something happens  
+
+\- why it happens  
+
+\- what it depends on  
 
 
 
@@ -60,15 +66,17 @@ State transitions are first‑class.
 
 
 
-Hidden mutation, ambient state, and action at a distance are treated as costs
-
-rather than conveniences.
+Hidden mutation and ambient state are treated as costs.
 
 
 
-When state changes, that change should be local in description and difficult
+State changes must be:
 
-to perform accidentally.
+
+
+\- locally describable  
+
+\- difficult to introduce accidentally  
 
 
 
@@ -80,15 +88,15 @@ to perform accidentally.
 
 
 
-SouperSport favors composition mechanisms that preserve understanding over
-
-abstraction mechanisms that compress meaning.
+Prefer mechanisms that preserve meaning.
 
 
 
-If an abstraction makes reasoning harder than the thing it replaces—even if it
+Avoid abstractions that compress or obscure reasoning.
 
-reduces code size or repetition—it is likely out of scope.
+
+
+If an abstraction makes reasoning harder, it is out of scope.
 
 
 
@@ -100,19 +108,19 @@ reduces code size or repetition—it is likely out of scope.
 
 
 
-The language should aim for:
+The system should have:
 
 
 
-\- few core concepts,
+\- few core concepts  
 
-\- minimal special cases,
+\- uniform rules  
 
-\- uniform rules.
+\- minimal exceptions  
 
 
 
-Expressiveness should emerge from combination, not exception.
+Complexity comes from composition, not special cases.
 
 
 
@@ -120,7 +128,7 @@ Expressiveness should emerge from combination, not exception.
 
 
 
-\## 5. Non‑Goals Are Binding Constraints
+\## 5. Non‑Goals Are Binding
 
 
 
@@ -128,13 +136,15 @@ SouperSport does not optimize for:
 
 
 
-\- minimal keystrokes,
+\- brevity  
 
-\- syntactic cleverness,
+\- clever syntax  
 
-\- familiarity with existing languages.
+\- familiarity  
 
 
 
-Readability to human reasoning and to compilers is prioritized over habit.
+It prioritizes reasoning clarity over convenience.
+
+
 

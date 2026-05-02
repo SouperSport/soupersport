@@ -8,7 +8,7 @@ real‑world systems without degrading correctness guarantees.
 
 
 
-This rationale explains key design choices validated through stress testing.
+This document explains key design choices.
 
 
 
@@ -20,9 +20,7 @@ This rationale explains key design choices validated through stress testing.
 
 
 
-Determinism is opt‑in and enforced to avoid imposing unnecessary constraints
-
-on all code while making guarantees strong where they matter.
+Determinism is opt‑in to avoid over‑constraining all code.
 
 
 
@@ -30,9 +28,9 @@ This allows:
 
 
 
-\- ordinary I/O, networking, and interaction,
+\- ordinary I/O and interaction  
 
-\- alongside strictly deterministic computation.
+\- alongside strictly deterministic computation  
 
 
 
@@ -44,15 +42,15 @@ This allows:
 
 
 
-Real‑world nondeterminism (time, randomness, I/O, scheduling) is not eliminated;
-
-it is constrained to explicit boundaries where it becomes declared input.
+Nondeterminism is not eliminated.
 
 
 
-This prevents accidental observation of nondeterminism while preserving
+It is constrained to boundaries where it becomes declared input.
 
-practical expressiveness.
+
+
+This prevents accidental observation of nondeterminism.
 
 
 
@@ -64,19 +62,19 @@ practical expressiveness.
 
 
 
-Recording semantic transitions instead of operational steps allows:
+Semantic traces allow:
 
 
 
-\- replay without over‑specification,
+\- replay without over‑specification  
 
-\- rewind with causal explanation,
+\- causal rewind  
 
-\- counterfactual reasoning without instrumentation artifacts.
+\- counterfactual reasoning  
 
 
 
-Operational detail is left to tooling, not the language.
+Operational detail is left to tooling.
 
 
 
@@ -88,17 +86,13 @@ Operational detail is left to tooling, not the language.
 
 
 
-Security and correctness require semantic stability.
+\- Correctness requires semantic stability  
+
+\- Productivity requires flexibility  
 
 
 
-Developer productivity requires flexibility.
-
-
-
-Observability profiles allow different tooling needs
-
-without changing program meaning.
+Observability profiles support both.
 
 
 
@@ -110,15 +104,11 @@ without changing program meaning.
 
 
 
-Floating‑point variability is one of the most common sources of hidden
-
-nondeterminism.
+Floating‑point variability introduces hidden nondeterminism.
 
 
 
-Treating numeric variance as a semantic issue rather than a runtime bug
-
-ensures correctness guarantees remain meaningful across platforms.
+Treating numeric variance as a semantic issue preserves guarantees.
 
 
 
@@ -130,19 +120,19 @@ ensures correctness guarantees remain meaningful across platforms.
 
 
 
-Under stress testing, this model prevents:
+This model prevents:
 
 
 
-\- hidden nondeterminism,
+\- hidden nondeterminism  
 
-\- replay divergence,
+\- replay divergence  
 
-\- unexplainable behavior,
+\- unexplainable behavior  
 
-\- audit and verification gaps,
+\- audit gaps  
 
 
 
-while remaining viable for general software development.
+while remaining viable for software development.
 

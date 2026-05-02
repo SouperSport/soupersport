@@ -2,10 +2,6 @@
 
 
 
-\*\*Status:\*\* Final and Normative
-
-
-
 \---
 
 
@@ -14,9 +10,15 @@
 
 
 
-All control flow that affects semantic outcome must be explicit,
+All control flow that affects semantic outcome MUST be:
 
-representable, and traceable.
+
+
+\- explicit  
+
+\- representable  
+
+\- traceable  
 
 
 
@@ -24,53 +26,145 @@ This includes:
 
 
 
-\- branching,
+\- branching  
 
-\- iteration,
+\- iteration  
 
-\- error propagation,
+\- concurrency and synchronization  
 
-\- goal or search selection,
+\- error propagation  
 
-\- and early termination.
+\- goal or search selection  
 
-
-
-Control flow must be structurally local to its declared handling context.
+\- early termination  
 
 
 
-It MUST NOT:
+Control flow must be structurally local.
 
 
 
-\- depend on implicit runtime behavior,
-
-\- rely on ambient or hidden state,
-
-\- bypass explicit handling structure,
-
-\- or alter outcome without appearing in semantic state and trace.
+It must not:
 
 
 
-Errors are control‑flow events and are subject to the same requirements.
+\- depend on implicit behavior  
+
+\- rely on hidden state  
+
+\- bypass declared structure  
+
+\- alter outcome without trace representation  
 
 
 
-An error that affects execution or outcome MUST be:
+Errors are control‑flow events.
 
 
 
-\- explicitly represented,
-
-\- deterministically propagated in deterministic regions,
-
-\- and visible in semantic state and trace.
+They must be:
 
 
 
-This law exists to ensure explainability, rewindability,
+\- explicitly represented  
 
-and counterfactual reasoning across all execution modes.
+\- deterministically propagated  
+
+\- visible in state and trace  
+
+
+
+\---
+
+
+
+\## Definitions
+
+
+
+\*\*Control flow\*\*
+
+
+
+Mechanisms determining execution structure and ordering.
+
+
+
+\---
+
+
+
+\*\*Explicit control flow\*\*
+
+
+
+Control flow that is:
+
+
+
+\- visible in structure  
+
+\- traceable in execution  
+
+\- attributable to declared rules  
+
+
+
+\---
+
+
+
+\## Prohibitions
+
+
+
+Illegal if they affect outcome:
+
+
+
+\- implicit control flow  
+
+\- hidden state‑dependent flow  
+
+\- structure bypass  
+
+\- untraceable outcome changes  
+
+
+
+\---
+
+
+
+\## Relationship to other concepts
+
+
+
+\- Deterministic replayability requires explicit control flow  
+
+\- Traces include control decisions  
+
+\- Lack of explicitness results in refusal  
+
+
+
+\---
+
+
+
+\## Design consequence
+
+
+
+If control flow cannot be explicit:
+
+
+
+\- it must be redesigned  
+
+\- or isolated outside deterministic regions  
+
+
+
+There is no implicit control flow in SouperSport.
 

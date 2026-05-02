@@ -2,7 +2,15 @@
 
 
 
-Golden certificates define the canonical semantics of the system.
+\---
+
+
+
+\## Purpose
+
+
+
+Golden certificates define canonical semantic behavior.
 
 
 
@@ -14,15 +22,21 @@ Golden certificates define the canonical semantics of the system.
 
 
 
-1\. Golden certificates MUST NOT change as a side effect of refactoring.
+1\. Golden certificates MUST NOT change due to refactoring  
 
-2\. Any change to a golden certificate represents an intentional semantic change.
 
-3\. Updates to golden certificates must:
 
-&#x20;  - be isolated in their own commit, and
+2\. Any change represents a semantic change  
 
-&#x20;  - mention the reason for the semantic change in the commit message.
+
+
+3\. Updates MUST:
+
+
+
+&#x20;  - be isolated in their own commit  
+
+&#x20;  - explicitly state the reason for the change  
 
 
 
@@ -34,15 +48,37 @@ Golden certificates define the canonical semantics of the system.
 
 
 
-1\. Update the implementation.
-
-2\. Regenerate the golden certificate explicitly.
-
-3\. Commit ONLY the golden certificate change with a message explaining why
-
-&#x20;  semantics changed.
+1\. Update implementation  
 
 
 
-CI enforces that all ordinary changes preserve golden semantics.
+2\. Regenerate certificate  
+
+
+
+3\. Commit ONLY the certificate change  
+
+&#x20;  with an explanation of the semantic change  
+
+
+
+\---
+
+
+
+\## Enforcement
+
+
+
+CI enforces:
+
+
+
+\- stability of golden artifacts  
+
+\- rejection of unintended changes  
+
+
+
+Semantic change must be explicit.
 
