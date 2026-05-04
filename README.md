@@ -14,20 +14,34 @@ including hidden nondeterminism, irreproducible behavior, unsafe
 refactoring, and the inability to explain _why_ a change altered system behavior.
 
 A minimal reference executor exists to validate semantic behavior and determinism,  
-but the project is not yet a production language or toolchain.
+but the project is not a production language or toolchain.
 
 This repository contains **design foundations, semantic specifications,  
-and process history**, along with a minimal executable reference used for validation.
+and process history**, along with a minimal executable reference used solely  
+for semantic validation.
+
+---
+
+## Project website
+
+An overview and entry point for the project is available at:
+
+https://soupersport.dev
+
+The website provides high‑level orientation and context.  
+All authoritative specifications, semantic definitions, and guarantees  
+originate in this repository.
 
 ---
 
 ## Status
 
-The project’s **semantic foundations and core constraints are now stable**.
+The project’s **semantic foundations and core constraints are stable**.
 
-A minimal deterministic reference executor is implemented and verified in CI.
+A **V1 semantic baseline** has been established, and a minimal deterministic  
+reference executor is implemented and verified in continuous integration.
 
-This executor demonstrates:
+The reference executor demonstrates:
 
 - deterministic execution from canonical input  
 - explicit state transitions  
@@ -35,7 +49,7 @@ This executor demonstrates:
 - trace generation as a semantic artifact  
 - provenance binding and hashing  
 
-Public documentation includes:
+Public documentation defines:
 
 - explicit semantic laws  
 - a defined semantic execution target  
@@ -43,19 +57,19 @@ Public documentation includes:
 - state‑transition trace definitions  
 - conformance, refusal, and equivalence rules  
 - provenance and trace schema definitions  
-- a selected reference execution model and realization sketch  
 
 These materials collectively define what it means for an execution to be  
-considered meaningful, deterministic (when claimed), and explainable.
+considered meaningful, deterministic (when claimed), and explainable  
+under the SouperSport model.
 
 Work remains **design‑focused**.
 
-The implementation is minimal and exists solely to validate semantic guarantees,  
-not to serve as a production system.
+The implementation is intentionally minimal and exists to validate semantic  
+guarantees, not to serve as a general‑purpose production system.
 
 ---
 
-## Guarantees (Current Scope)
+## Guarantees (Current scope)
 
 The current reference executor establishes the following guarantees:
 
@@ -63,16 +77,16 @@ The current reference executor establishes the following guarantees:
   Identical declared inputs produce identical outputs and traces.
 
 - **Canonical trace as meaning**  
-  Execution produces a structured state-transition trace (`trace.json`)  
+  Execution produces a structured state‑transition trace (`trace.json`)  
   representing semantic behavior.
 
-- **Rule-as-data evaluation**  
-  Execution decisions are derived from input-defined rules  
+- **Rule‑as‑data evaluation**  
+  Execution decisions are derived from input‑defined rules  
   (`rule_definition`), not hardcoded logic.
 
 - **Provenance binding**  
   Execution produces a provenance payload (`provenance.json`) including:  
-  `input_hash`, `trace_hash`, `output_hash`
+  `input_hash`, `trace_hash`, and `output_hash`.
 
 - **Canonical input hashing**  
   Changes to inputs or rules produce different hashes; identical inputs do not.
@@ -81,13 +95,13 @@ The current reference executor establishes the following guarantees:
   Unsupported or invalid inputs result in explicit refusal.
 
 - **External reproducibility**  
-  All guarantees are validated in CI using clean build-from-source execution.
+  All guarantees are validated in CI using clean build‑from‑source execution.
 
 ---
 
 ## What engaging with SouperSport currently means
 
-At this stage, working with SouperSport means reasoning about:
+At this stage, working with SouperSport primarily involves reasoning about:
 
 - deterministic regions of execution  
 - explicit boundaries where nondeterminism is permitted or refused  
@@ -115,7 +129,7 @@ SouperSport is **not** intended to be:
 
 This repository intentionally contains **public, durable artifacts only**.
 
-For orientation and intended reading order, start with:
+For orientation and intended reading order, begin with:
 
 - `docs/index.md`  
 
